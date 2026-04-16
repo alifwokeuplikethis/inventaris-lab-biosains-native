@@ -68,18 +68,18 @@
           </li>
 
           <li class="nav-link bordered px-3">
-            <a href="programs.html" class="nav-link px-3">
+            <a href="kadaluarsa.php" class="nav-link px-3 <?= ($current_page == 'kadaluarsa.php') ? 'active' : '' ?>">
               <span class="me-2"><i class="bi bi-journal-text"></i></span>
               <span>Kadaluarsa</span>
             </a>
           </li>
           <li class="nav-link bordered px-3">
-            <a href="profile.html" class="nav-link px-3">
+            <a href="laporan.php" class="nav-link px-3 <?= ($current_page == 'laporan.php') ? 'active' : '' ?> ">
               <span class="me-2"><i class="bi bi-person"></i></span>
               <span>Laporan</span>
             </a>
           <li class="nav-link bordered px-3">
-            <a href="profile.html" class="nav-link px-3">
+            <a href="akun_teknisi.php" class="nav-link px-3 <?= ($current_page == 'akun_teknisi.php') ? 'active' : '' ?> ">
               <span class="me-2"><i class="bi bi-person"></i></span>
               <span>Akun Teknisi</span>
             </a>

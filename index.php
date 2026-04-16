@@ -21,7 +21,7 @@ include "sidebar.php";
       <div class="card border-0" style="border-radius: 12px; overflow: hidden;">
         
         <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center p-4">
-          <h2 class="mb-0 fw-bold" style="color: #a06b4d; font-size: 24px;">Kadaluarsa</h2>
+          <h2 class="mb-0 fw-bold" style="color: #a06b4d; font-size: 24px;">Dashboard</h2>
           
           <div class="d-flex align-items-center gap-3">
             <div class="position-relative">

@@ -78,7 +78,7 @@ include "sidebar.php";
         <div class="outer-card shadow-sm">
           
           <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center p-4">
-            <h1 class="header-title mb-0">Tambah Barang</h1>
+            <h1 class="header-title mb-0">Bahan Mendekati Kadaluarsa</h1>
             <div class="header-icons text-secondary fs-4">
               <i class="fa fa-angle-double-right opacity-50"></i>
               <i class="fa fa-home ms-2 text-dark"></i>
