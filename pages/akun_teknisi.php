@@ -1,14 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tambah Barang</title>
-  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <link rel="stylesheet" href="css/bootstrap.css">
-  <link rel="stylesheet" href="css/style.css"> <link rel="stylesheet" href="css/dataTables.bootstrap5.min.css">
 
   <style>
     /* Tambahkan ini untuk memastikan variabel CSS terbaca jika tidak ada di style.css */
@@ -78,10 +67,6 @@
 </head>
 
 <body>
-<?php
-include "navbar.php";
-include "sidebar.php";
-?>
   <main>
     <div class="container-fluid">
       
@@ -89,7 +74,7 @@ include "sidebar.php";
         <div class="outer-card shadow-sm">
           
           <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center p-4">
-            <h1 class="header-title mb-0">Tambah Barang</h1>
+            <h1 class="header-title mb-0">Mensetujui Akun Teknisi</h1>
             <div class="header-icons text-secondary fs-4">
               <i class="fa fa-angle-double-right opacity-50"></i>
               <i class="fa fa-home ms-2 text-dark"></i>
@@ -169,7 +154,3 @@ include "sidebar.php";
     </div>
   </main>
 
-  <script src="js/jquery-3.5.1.js"></script>
-  <script src="js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
