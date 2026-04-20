@@ -69,10 +69,8 @@
 <body>
   <main>
     <div class="container-fluid">
-      
       <div class="section-teal">
         <div class="outer-card shadow-sm">
-          
           <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center p-4">
             <h1 class="header-title mb-0">Mensetujui Akun Teknisi</h1>
             <div class="header-icons text-secondary fs-4">
@@ -82,7 +80,7 @@
           </div>
 
           <div class="card-body p-4 pt-0">
-            <form>
+            <form>2
               <div class="row gx-5">
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Nama Bahan Kimia</label>
