@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pengajuan Bahan</title>
 
+
+<?php
+include "navbar.php";
+include "sidebar.php";
+?>
+
 <style>
 body {
     margin: 0;
@@ -13,7 +19,7 @@ body {
 }
 
 /* Sidebar */
-.sidebar {
+/* .sidebar {
     width: 230px;
     height: 100vh;
     background: #3b7d7d;
@@ -40,7 +46,7 @@ body {
 
 .sidebar li:hover {
     background: rgba(255,255,255,0.2);
-}
+} */
 
 /* Content */
 .content {
@@ -54,8 +60,16 @@ body {
     align-items: center;
 }
 
+.card-parent {
+    margin: 10px;
+    background: #2b6766;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
 .card {
-    margin-top: 20px;
+    margin: 0px;
     background: white;
     border-radius: 12px;
     padding: 20px;
@@ -116,7 +130,7 @@ button {
 </head>
 <body>
 
-<div class="sidebar">
+<!-- <div class="sidebar">
     <h2>LAB-BIOSAINS</h2>
     <ul>
         <li>Dashboard</li>
@@ -124,34 +138,37 @@ button {
         <li>Kadaluwarsa</li>
         <li>Laporan</li>
     </ul>
-</div>
+</div> -->
 
 <div class="content">
-    <div class="header">
-        <h2>Pengajuan Pemakaian Bahan</h2>
-        <input type="text" placeholder="Telusuri...">
-    </div>
-
-    <div class="card">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Nama Barang</th>
-                    <th>Satuan</th>
-                    <th>Jenis</th>
-                    <th>Stok</th>
-                    <th>Status</th>
-                    <th>Jumlah Ambil</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody">
-                <!-- Data akan diisi JS -->
-            </tbody>
-        </table>
+    <div class="card-parent">
+        <div class="card">
+            <div class="header">
+            <h3 style="color: #a06b4d; font-size: 24px; font-weight: bold;">Pengajuan Pemakaian Bahan</h3>
+            <input type="text" placeholder="Telusuri...">
+            </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th>No</th>
+                        <th>Nama Barang</th>
+                        <th>Satuan</th>
+                        <th>Jenis</th>
+                        <th>Stok</th>
+                        <th>Status</th>
+                        <th>Jumlah Ambil</th>
+                        <th>Aksi</th>
+                        </tr>
+                    </thead>
+                <tbody id="tableBody">
+                    <!-- Data akan diisi JS -->
+                </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
+
 
 <script>
 // Dummy data (nanti ganti dari backend)

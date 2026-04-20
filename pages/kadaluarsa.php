@@ -126,7 +126,6 @@
 
 <?php
 /* ================= INCLUDE ================= */
-include "navbar.php";
 include "sidebar.php";
 ?>
 
