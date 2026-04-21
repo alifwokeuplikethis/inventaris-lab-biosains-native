@@ -56,11 +56,20 @@
     <div class="row d-flex justify-content-center align-items-center w-100">
       
       <div class="col-12 col-md-9 col-lg-6 col-xl-5 text-center mb-5 mb-lg-0">
+        
+        <div class="mb-5 text-center">
+          <h1 class="fw-bold mb-1" style="color: #02343F; font-size: 2.5rem;">
+            <i class="fa-solid fa-flask me-2"></i>Expandtory
+          </h1>
+          <h5 class="text-muted fw-medium">Sistem Inventaris Laboratorium</h5>
+        </div>
         <div class="position-relative d-inline-block">
           <img src="images/chest.png" class="img-fluid" alt="Chest">
-          <img src="images/brown.png" class="position-absolute" style="width: 15%; bottom: 50%; left: 20%;" alt="Brown Potion">
-          <img src="images/honey.png" class="position-absolute" style="width: 15%; bottom: 55%; left: 42.5%;" alt="Honey Potion">
-          <img src="images/red.png" class="position-absolute" style="width: 15%; bottom: 50%; left: 65%;" alt="Red Potion">
+          <img src="images/brown.png" class="position-absolute" style="width: 15%; bottom: 50%; left: 25%;" alt="Brown Potion">
+          <img src="images/steve.png" class="position-absolute" style="width: 55%; top: 40%; right: 60%;" alt="Steve">
+          <img src="images/honey.png" class="position-absolute" style="width: 15%; bottom: 55%; left: 47.5%;" alt="Honey Potion">
+          <img src="images/red.png" class="position-absolute" style="width: 15%; bottom: 50%; left: 70%;" alt="Red Potion">
+          <img src="images/pickaxe_pose.png" class="position-absolute" style="width: 70%; top: 30%; right: 38%;" alt="DEMEN PICKAXXXEEE">
         </div>
       </div>
 
@@ -70,7 +79,7 @@
           <h3 class="fw-bold mb-2">Masuk</h3>
           <p class="text-muted mb-4">Gunakan email yang sudah disetujui (di-ACC) oleh Admin.</p>
           
-        <a href="" class="btn btn-google btn-lg w-100 d-flex align-items-center justify-content-center fw-bold rounded-pill">
+        <a href="index.php" class="btn btn-google btn-lg w-100 d-flex align-items-center justify-content-center fw-bold rounded-pill">
           <img src="images/google.png" alt="Google Logo" style="width: 20px; margin-right: 10px;">
           Sign in with Google
         </a>
@@ -103,7 +112,7 @@
 
   <div class="mt-auto d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-custom-dark">
     <div class="text-white mb-3 mb-md-0">
-      Copyright © 2024. All rights reserved.
+      Not an official Minecraft product. Not approved by or associated with Mojang.
     </div>
     <div>
       <!-- <a href="#!" class="text-white me-4"><i class="fab fa-facebook-f"></i></a>
