@@ -4,7 +4,7 @@ include "sidebar.php";
 
 // 1. Tentukan halaman utama yang jadi background
 $halaman = isset($_GET['pages']) ? $_GET['pages'] : 'dashboard';
-$daftar_halaman = ['dashboard', 'kadaluarsa', 'tambah_barang', 'laporan', 'akun_teknisi'];
+$daftar_halaman = ['dashboard', 'kadaluarsa', 'tambah_barang', 'laporan', 'akun_teknisi', 'transaksi_stok'];
 
 // Bungkus main content dalam div agar tidak berantakan dengan sidebar
 echo '<div class="main-content">'; 
