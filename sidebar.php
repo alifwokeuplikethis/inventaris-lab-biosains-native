@@ -88,6 +88,12 @@
               <span>Akun Teknisi</span>
             </a>
           </li>
+          <li class="nav-link bordered px-3">
+            <a href="index.php?pages=permintaan_teknisi" class="nav-link px-3 <?= ($halaman == 'permintaan_teknisi') ? 'active' : '' ?> ">
+              <span class="me-2"><i class="bi bi-person"></i></span>
+              <span>Permintaan Teknisi</span>
+            </a>
+          </li>
         </ul>
       </nav>
     </div>
