@@ -79,7 +79,7 @@
           <h3 class="fw-bold mb-2">Masuk</h3>
           <p class="text-muted mb-4">Gunakan email yang sudah disetujui (di-ACC) oleh Admin.</p>
           
-        <a href="index.php" class="btn btn-google btn-lg w-100 d-flex align-items-center justify-content-center fw-bold rounded-pill">
+        <a href="/auth/google/login" class="btn btn-google btn-lg w-100 d-flex align-items-center justify-content-center fw-bold rounded-pill">
           <img src="images/google.png" alt="Google Logo" style="width: 20px; margin-right: 10px;">
           Sign in with Google
         </a>

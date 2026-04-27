@@ -1,351 +1,284 @@
-<style>
-  /* --- CUSTOM STYLING --- */
-  /* 1. Custom Scrollbar untuk Tabel */
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: #f1f5f4; 
-    border-radius: 10px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #bdc3c7; 
-    border-radius: 10px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #95a5a6; 
-  }
+  <style>
+    /* ===== GLOBAL ===== */
+    body { 
+      background: #f5f7f6; 
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+    }
+    .text-main { color: #02343F; }
 
-  /* 2. Efek Hover pada Baris Tabel */
-  .table-hover-custom tbody tr {
-    transition: all 0.2s ease-in-out;
-  }
-  .table-hover-custom tbody tr:hover {
-    background-color: #f8faf9;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  }
+    /* ===== STAT PILL (KOTAK PUTIH CLEAN) ===== */
+    .stat-pill {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 18px 20px;
+      border-radius: 16px;
+      background: white; 
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      border: none;
+    }
 
-  /* 3. Badge Status Soft Modern */
-  .badge-soft-success {
-    background-color: #d1e7dd;
-    color: #0f5132;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-  }
+    .stat-pill .ico {
+      width: 45px;
+      height: 45px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+    }
 
-  /* 4. Efek Interaktif Input & Tombol */
-  .search-input:focus, .btn-filter:focus, .btn-filter:hover {
-    box-shadow: 0 0 0 0.2rem rgba(2, 52, 63, 0.15) !important;
-    background-color: #fff !important;
-    border: 1px solid #02343F !important;
-    outline: none;
-  }
-/* --- STYLING TOMBOL MINIMALIS BULAT --- */
-  .btn-icon-circle {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%; /* Membuatnya bulat sempurna */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    border: none;
-    background-color: #f1f5f4; /* Abu-abu terang */
-    color: #666;
-  }
-  .btn-icon-circle:hover {
-    transform: scale(1.1); /* Efek membesar dikit saat di-hover */
-  }
-  
-  .btn-icon-circle.detail:hover { background-color: #02343F; color: #fff; box-shadow: 0 3px 6px rgba(2,52,63,0.3); }
-  .btn-icon-circle.stok:hover { background-color: #00796b; color: #fff; box-shadow: 0 3px 6px rgba(0,121,107,0.3); }
-  .btn-icon-circle.hapus:hover { background-color: #e74c3c; color: #fff; box-shadow: 0 3px 6px rgba(231,76,60,0.3); }
+    /* Warna Ikon Sesuai Kategori */
+    .pill-total .ico { background: #e3f2fd; color: #0d6efd; }
+    .pill-aktif .ico { background: #d1e7dd; color: #198754; }
+    .pill-nonaktif .ico { background: #f8d7da; color: #dc3545; }
 
+    .stat-pill .info small {
+      color: #6c757d;
+      font-weight: 500;
+      display: block;
+      margin-bottom: -2px;
+    }
+    .stat-pill .info strong {
+      font-size: 22px;
+      color: #212529;
+    }
 
-  /* Style Header Tabel agar text lebih rapi */
-  .thead-modern th {
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-weight: 600;
-  }
-  
- /* --- STYLING DROPDOWN MENU MODERN --- */
-.custom-dropdown-menu {
-  border-radius: 16px !important;
-  padding: 8px;
-  border: 1px solid rgba(2, 52, 63, 0.1); /* Garis batas tipis warna tema */
-  box-shadow: 0 10px 30px rgba(2, 52, 63, 0.15) !important; 
-  min-width: 180px;
-}
+    /* ===== BUTTON ICON ===== */
+    .btn-circle {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: #f1f5f4;
+      border: none;
+      transition: 0.2s ease;
+    }
+    .btn-circle:hover { transform: scale(1.1); }
+    .btn-detail:hover { background:#02343F; color:#fff; }
+    .btn-stok:hover { background:#00796b; color:#fff; }
+    .btn-hapus:hover { background:#e74c3c; color:#fff; }
 
-.custom-dropdown-menu .dropdown-item {
-  border-radius: 10px;
-  padding: 10px 16px;
-  font-weight: 500;
-  color: #444;
-  transition: all 0.2s ease-in-out;
-  display: flex;
-  align-items: center;
-}
+    /* ===== INPUT & DROPDOWN ===== */
+    .control {
+      border-radius: 8px;
+      border: 1px solid #dee2e6;
+    }
+    .control:focus {
+      border-color: #02343F;
+      box-shadow: 0 0 0 0.2rem rgba(2,52,63,0.15);
+    }
+    .btn-filter-dropdown {
+      border-radius: 8px;
+      border: 1px solid #06697f;
+      background: #fff;
+      color: #02343F;
+      font-weight: 600;
+    }
+    .btn-filter-dropdown:hover {
+      background: #02343F;
+      color: #fff;
+    }
 
-/* Warna Ikon bawaan */
-.custom-dropdown-menu .dropdown-item i {
-  font-size: 1.1rem;
-  width: 24px;
-  transition: all 0.2s ease-in-out;
-}
+    /* ===== TABEL CLEAN STYLING ===== */
+    #table-dashboard thead th {
+      background: #f8faf9 !important;
+      border-bottom: 2px solid #eef2f0 !important;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #495057;
+    }
 
-/* Efek Hover yang lebih mewah */
-.custom-dropdown-menu .dropdown-item:hover {
-  background-color: #d1e7dd;          /* Warna hijau soft dari badge kamu */
-  color: #02343F;                     /* Teks warna gelap utama */
-  font-weight: 600;
-  transform: translateX(4px);         /* Geser kanan dikit */
-}
+    /* Styling Pagination bawaan Datatables */
+    .dataTables_filter, .dataTables_length { display: none !important; }
+    
+    .dataTables_wrapper .page-link {
+      border: none;
+      border-radius: 8px;
+      background: #f1f5f4;
+      color: #02343F;
+      margin: 0 3px;
+      font-weight: 500;
+    }
+    .dataTables_wrapper .page-item.active .page-link {
+      background: #02343F;
+      color: #fff;
+      box-shadow: 0 2px 4px rgba(2, 52, 63, 0.3);
+    }
+    .dataTables_info {
+      color: #6c757d !important;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
 
-/* Bikin ikon membesar saat barisnya di-hover */
-.custom-dropdown-menu .dropdown-item:hover i {
-  transform: scale(1.2);
-  color: #02343F !important;
-}
+<main class="py-4">
+  <div class="container-fluid px-4">
 
-.custom-dropdown-menu .dropdown-divider {
-  border-top-color: rgba(0,0,0,0.05);
-  margin: 6px 0;
-}
-</style>
-
-<main class="mt-5 pt-3 dashboard-content">
-  
-  <div class="container-fluid">
-    <section class="p-3 p-md-4 shadow-sm" style="background-color: #2b6766; border-radius: 15px;">
+    <section class="p-4 shadow-sm" style="background:#2b6766; border-radius:20px;">
       
-      <div class="card border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
+      <div class="row g-4 mb-4">
         
-        <div class="card-header bg-white border-bottom p-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
-          <h2 class="mb-0 fw-bold" style="color: #02343F; font-size: 24px;">
-            <i class="fa fa-boxes-stacked me-2 opacity-75"></i>Data Bahan
-          </h2>
-          
-          <div class="d-flex align-items-center gap-3">
-            
-            <div class="dropdown d-none d-md-block">
-  <button id="filterBtn" class="btn btn-custom-filter rounded-pill px-4 py-2 d-flex align-items-center justify-content-between gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 140px;">
-    <div class="d-flex align-items-center">
-      <i class="bi bi-funnel-fill me-2"></i> 
-      <span id="filterText" class="fw-semibold">Jenis</span>
-    </div>
-    <i class="bi bi-chevron-down ms-2" style="font-size: 0.8rem;"></i>
-  </button>
-  
-  <ul class="dropdown-menu custom-dropdown-menu shadow border-0">
-    <li>
-      <a class="dropdown-item filter-pilihan py-2" href="#">
-        <i class="bi bi-collection-fill text-secondary me-2"></i> Semua Jenis
-      </a>
-    </li>
-    <li><hr class="dropdown-divider"></li>
-    <li>
-      <a class="dropdown-item filter-pilihan py-2" href="#">
-        <i class="bi bi-box-fill text-warning me-2"></i> Padat
-      </a>
-    </li>
-    <li>
-      <a class="dropdown-item filter-pilihan py-2" href="#">
-        <i class="bi bi-droplet-fill text-info me-2"></i> Cair
-      </a>
-    </li>
-    <li>
-      <a class="dropdown-item filter-pilihan py-2" href="#">
-        <i class="bi bi-cloud-fill text-success me-2"></i> Gas
-      </a>
-    </li>
-  </ul>
-</div>
-
-            <div class="position-relative d-none d-md-block">
-              <input type="text" class="form-control search-input rounded-pill px-4 py-2" 
-                     placeholder="Telusuri barang..." style="background-color: #f1f5f4; border: 1px solid transparent; width: 260px;">
-              <i class="fa fa-search position-absolute" style="right: 18px; top: 12px; color: #888;"></i>
+        <div class="col-12 col-md-4">
+          <div class="stat-pill pill-total">
+            <div class="ico"><i class="bi bi-people-fill"></i></div>
+            <div class="info">
+              <small>Total Bahan</small>
+              <strong>xxx</strong>
             </div>
-
-            <div class="text-secondary fs-5 d-flex align-items-center ms-2" style="cursor: pointer;">
-              <i class="fa fa-home hover-primary" style="transition: color 0.2s;"></i>
-            </div>
-
           </div>
         </div>
 
-        <div class="card-body p-0">
-          <div class="table-responsive custom-scrollbar" style="height: 60vh; overflow-y: auto;">
-            <table class="table table-hover-custom align-middle border-0 mb-0 text-nowrap">
-              
-              <thead class="sticky-top" style="z-index: 10;">
-                <tr class="thead-modern" style="background-color: #f8faf9; color: #555; border-bottom: 2px solid #eef2f0;">
-                  <th class="py-3 text-center border-0" style="width: 5%">No</th>
-                  <th class="py-3 border-0" style="width: 20%">Nama Barang</th> 
-                  <th class="py-3 text-center border-0" style="width: 10%">Satuan</th>
-                  <th class="py-3 text-center border-0" style="width: 10%">Jenis</th>
-                  <th class="py-3 text-center border-0" style="width: 15%">Foto</th>
-                  <th class="py-3 text-center border-0" style="width: 15%">Kuantitas</th>
-                  <th class="py-3 text-center border-0" style="width: 10%">Status</th>
-                  <th class="py-3 text-center border-0" style="width: 15%">Aksi</th>
+        <div class="col-12 col-md-4">
+          <div class="stat-pill pill-aktif">
+            <div class="ico"><i class="bi bi-person-check-fill"></i></div>
+            <div class="info">
+              <small>Stok hampir habis</small>
+              <strong>xxx</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <div class="stat-pill pill-nonaktif">
+            <div class="ico"><i class="bi bi-person-x-fill"></i></div>
+            <div class="info">
+              <small>Stok habis</small>
+              <strong>xxx</strong>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="card border-0 shadow-lg" style="border-radius:18px; overflow:hidden;">
+
+        <div class="card-header bg-white p-3 d-flex justify-content-between align-items-center flex-wrap gap-2" style="border-bottom: 1px solid #f0f0f0;">
+          <h5 class="fw-bold text-main m-0">
+            <i class="bi bi-box-seam me-2"></i>Data Bahan Baku
+          </h5>
+
+          <!--  -->
+          <div class="d-flex gap-2">
+            <div class="dropdown">
+              <button class="btn btn-filter-dropdown dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown">
+                <i class="bi bi-funnel me-1"></i> 
+                <span id="filterText">Rak</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                <li><a class="dropdown-item filter-item" href="#" data-value="">1</a></li>
+                <li><a class="dropdown-item filter-item" href="#" data-value="Padat">2</a></li>
+                <li><a class="dropdown-item filter-item" href="#" data-value="Cair">3</a></li>
+                <li><a class="dropdown-item filter-item" href="#" data-value="Gas">4</a></li>
+              </ul>
+            </div>
+            <!--  -->
+
+          <div class="d-flex gap-2">
+            <div class="dropdown">
+              <button class="btn btn-filter-dropdown dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown">
+                <i class="bi bi-funnel me-1"></i> 
+                <span id="filterText">Semua</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                <li><a class="dropdown-item filter-item" href="#" data-value="">Semua</a></li>
+                <li><a class="dropdown-item filter-item" href="#" data-value="Padat">Padat</a></li>
+                <li><a class="dropdown-item filter-item" href="#" data-value="Cair">Cair</a></li>
+                <li><a class="dropdown-item filter-item" href="#" data-value="Gas">Gas</a></li>
+              </ul>
+            </div>
+
+            <div class="position-relative">
+              <input type="text" id="searchInput" class="form-control control ps-3 shadow-sm" placeholder="Cari data..." style="width:220px;">
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body p-4 bg-white">
+          <div class="table-responsive">
+            <table id="table-dashboard" class="table table-hover align-middle mb-0" style="width: 100%;">
+              <thead>
+                <tr>
+                  <th width="50">No</th>
+                  <th>Nama Bahan</th>
+                  <th>Satuan</th>
+                  <th>Jenis</th>
+                  <th>Qty</th>
+                  <th>Foto</th>
+                  <th>Status</th>
+                  <th width="120">Aksi</th>
                 </tr>
               </thead>
-              
-              <tbody class="bg-white">
-                <tr style="border-bottom: 1px solid #f1f5f4;">
-                  <td class="text-center text-muted">1.</td>
-                  <td>
-                    <div class="fw-bold text-dark" style="font-size: 15px;">Clorin</div>
-                    <small class="text-muted">Kode: CLR-001</small>
-                  </td> 
-                  <td class="text-center"><span class="badge bg-light text-secondary border px-2 py-1">ml</span></td>
-                  <td class="text-center"><span class="text-muted">Gas</span></td>
-                  <td class="text-center">
-                    <div class="rounded-circle mx-auto d-flex align-items-center justify-content-center border" style="width: 45px; height: 45px; background-color: #f9fbfb;">
-                      <i class="fa fa-flask text-info fs-5"></i>
-                    </div>
-                  </td>
-                  <td class="text-center fw-bold" style="color: #02343F; font-size: 16px;">1.000</td>
-                  <td class="text-center">
-                    <span class="badge badge-soft-success rounded-pill px-3 py-2">TERSEDIA</span>
-                  </td>
-                  <td>
-                   <div class="d-flex gap-2 justify-content-center">
-  <button class="btn-icon-circle detail shadow-sm" title="Lihat Detail" data-bs-toggle="modal" data-bs-target="#contohModal">
-    <i class="bi bi-eye-fill"></i>
-  </button>
-  
-  <button class="btn-icon-circle stok shadow-sm" title="Tambah Stok" onclick="window.location.href='index.php?pages=transaksi_stok'">
-    <i class="bi bi-plus-circle-fill"></i>
-  </button>
-  
-  <button class="btn-icon-circle hapus shadow-sm" title="Hapus Data">
-    <i class="bi bi-trash-fill"></i>
-  </button>
-</div>
-                  </td>
-                </tr>
-                </tbody>
+              <tbody>
+                <script>
+                  for(let i=4; i<=12; i++){
+                    let jenis = i % 2 === 0 ? "Padat" : "Cair";
+                    document.write(`
+                    <tr>
+                      <td>${i}</td>
+                      <td class="fw-bold text-dark">Bahan Dummy ${i}</td>
+                      <td>mL</td>
+                      <td><span class="badge rounded-pill bg-light text-dark border">${jenis}</span></td>
+                      <td class="text-main fw-bold">${i*15}</td>
+                      <td><i class="bi bi-image text-muted"></i></td>
+                      <td><span class="badge bg-success bg-opacity-10 text-success px-3">Tersedia</span></td>
+                      <td>
+                        <div class="d-flex gap-2">
+                          <button class="btn-circle btn-detail" data-bs-toggle="modal" data-bs-target="#contohModal"><i class="bi bi-eye"></i></button>
+                          <button class="btn-circle btn-stok"><i class="bi bi-plus"></i></button>
+                          <button class="btn-circle btn-hapus"><i class="bi bi-trash"></i></button>
+                        </div>
+                      </td>
+                    </tr>`);
+                  }
+                </script>
+              </tbody>
             </table>
           </div>
         </div>
-        
+
       </div>
     </section>
+
   </div>
 </main>
 
+<script>
+$(document).ready(function(){
+  // Inisialisasi DataTable dengan Pagination aktif
+  const table = $('#table-dashboard').DataTable({
+    pageLength: 8, // Tampilkan 5 baris per halaman biar rapi
+    lengthChange: false, // Hilangkan pilihan "Show X entries"
+    info: true, // Munculkan teks "Menampilkan 1 sampai 5..."
+    language: {
+      "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ bahan",
+      "infoEmpty": "Tidak ada data bahan",
+      "infoFiltered": "(disaring dari total _MAX_ bahan)",
+      "zeroRecords": "Bahan tidak ditemukan",
+      "paginate": {
+        "next": "›", // Icon next simple
+        "previous": "‹" // Icon prev simple
+      }
+    }
+  });
 
+  // Fungsi Custom Search
+  $('#searchInput').on('keyup', function(){
+    table.search(this.value).draw();
+  });
 
-<!-- MODAL SECTION  -->
-<div class="modal fade" id="contohModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered"> <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
-            
-            <div class="modal-header border-0 pb-0 justify-content-end">
-                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            
-            <div class="modal-body p-4 pt-1">
-                <div class="row mb-4 align-items-center">
-                    
-                    <div class="col-md-5 text-center mb-3 mb-md-0">
-                        <img src="https://via.placeholder.com/300x300?text=Foto+Chloroform" alt="Foto Chloroform" class="img-fluid rounded-4 shadow-sm" style="object-fit: cover; max-height: 280px; width: 100%;">
-                    </div>
-                    
-                    <div class="col-md-7 ps-md-4">
-                      <div class="d-flex align-items-center mb-4">
-    <h3 class="fw-bold mb-0" style="color: #02343F;">Chloroform</h3>
-    <button class="btn btn-sm btn-light rounded-circle ms-3 shadow-sm border" title="Edit Data Master" style="width: 36px; height: 36px;">
-        <i class="bi bi-pencil-fill text-secondary"></i>
-    </button>
-</div>
-                        
-                        <table class="table table-borderless table-sm mb-0 fs-6">
-                            <tbody>
-                                <tr>
-                                    <td class="fw-semibold text-secondary" style="width: 40%; padding-bottom: 12px;">Rumus Kimia</td>
-                                    <td style="padding-bottom: 12px;">CHCl₃</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-semibold text-secondary" style="padding-bottom: 12px;">Merk/Katalog</td>
-                                    <td style="padding-bottom: 12px;">Merck / 102445</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-semibold text-secondary" style="padding-bottom: 12px;">Satuan</td>
-                                    <td style="padding-bottom: 12px;">miliLiter (L)</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-semibold text-secondary" style="padding-bottom: 12px;">Rak Penyimpanan</td>
-                                    <td style="padding-bottom: 12px;"><span class="badge bg-secondary rounded-pill px-3">Lemari Asam - A2</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+  // Fungsi Custom Filter berdasarkan Kolom 'Jenis' (Indeks Kolom ke-3, karena no urut itu ke-0)
+  $('.filter-item').on('click', function(e){
+    e.preventDefault();
+    let value = $(this).data('value');
+    let text = $(this).text();
 
-               <div class="p-3 rounded-4" style="background-color: #b2d3c2;">
-                    <h6 class="fw-bold mb-3 ms-2" style="color: #01242c;">Rincian Stok per Lokasi</h6>
-                    
-                    <div class="table-responsive custom-scrollbar" style="max-height: 250px; overflow-y: auto; padding-right: 5px;">
-                        <table class="table table-borderless table-sm mb-0 align-middle text-nowrap" style="background-color: transparent;">
-                            
-                            <thead style="position: sticky; top: 0; background-color: #b2d3c2; z-index: 2; border-bottom: 1px solid rgba(0,0,0,0.1);">
-                                <tr style="color: #01242c;">
-                                    <th class="fw-bold pb-2">Tipe</th>
-                                    <th class="fw-bold pb-2">Tgl Penerimaan</th>
-                                    <th class="fw-bold pb-2">Tgl Kadaluarsa</th>
-                                    <th class="fw-bold pb-2 text-end">Jumlah</th>
-                                </tr>
-                            </thead>
-                            
-                            <tbody style="color: #1a1a1a;">
-                                <tr>
-                                    <td class="py-2 fw-medium">Stok Sisa 1</td>
-                                    <td class="py-2">12 Jan 2025</td>
-                                    <td class="py-2 text-danger fw-medium">12 Jan 2026</td>
-                                    <td class="py-2 text-end fw-bold">2 mL</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-2 fw-medium">Stok Gudang 2</td>
-                                    <td class="py-2">05 Mar 2025</td>
-                                    <td class="py-2">05 Mar 2027</td>
-                                    <td class="py-2 text-end fw-bold">5 mL</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-2 fw-medium">Stok Gudang 3</td>
-                                    <td class="py-2">10 Apr 2025</td>
-                                    <td class="py-2">10 Apr 2027</td>
-                                    <td class="py-2 text-end fw-bold">3 mL</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-2 fw-medium">Stok Gudang 4</td>
-                                    <td class="py-2">15 Mei 2025</td>
-                                    <td class="py-2">15 Mei 2027</td>
-                                    <td class="py-2 text-end fw-bold">4 mL</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-2 fw-medium">Stok Gudang 5</td>
-                                    <td class="py-2">20 Jun 2025</td>
-                                    <td class="py-2">20 Jun 2028</td>
-                                    <td class="py-2 text-end fw-bold">10 mL</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-2 fw-medium">Stok Gudang 6</td>
-                                    <td class="py-2">25 Jul 2025</td>
-                                    <td class="py-2">25 Jul 2028</td>
-                                    <td class="py-2 text-end fw-bold">1 mL</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-    </div>
-</div>
+    $('#filterText').text(text);
+    table.column(3).search(value).draw();
+  });
+});
+</script>
+
+<?php
+include "modalDashboard.php";
+?>
