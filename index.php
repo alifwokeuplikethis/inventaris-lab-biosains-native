@@ -25,10 +25,10 @@ if ($action === 'login_page') {
 }
 
 // 🔒 CEK LOGIN (baru setelah itu)
-if (!isset($_SESSION['is_logged_in']) || $_SESSION['is_logged_in'] !== true) {
-    header('Location: index.php?action=login_page');
-    exit();
-}
+// if (!isset($_SESSION['is_logged_in']) || $_SESSION['is_logged_in'] !== true) {
+//     header('Location: index.php?action=login_page');
+//     exit();
+// }
 include "navbar.php";
 include "sidebar.php";
 

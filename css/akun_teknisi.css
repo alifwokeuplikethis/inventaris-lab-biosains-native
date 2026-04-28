@@ -18,7 +18,7 @@ body {
 
 main {
   margin-left: var(--offcanvas-width);
-  padding: 90px 24px 40px;
+  padding: 27px 24px 40px;
   min-height: 100vh;
   transition: margin 0.3s;
 }
