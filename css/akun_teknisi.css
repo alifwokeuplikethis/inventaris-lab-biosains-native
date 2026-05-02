@@ -1,0 +1,249 @@
+:root {
+  --offcanvas-width: 270px;
+  --teal-dark:  #2b6766;
+  --teal-mid:   #3d7f7e;
+  --teal-soft:  #5f9e9a;
+  --brown:      #a06b4d;
+  --bg:         #eef2f1;
+  --card-r:     16px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background-color: var(--bg);
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+}
+
+main {
+  margin-left: var(--offcanvas-width);
+  padding: 27px 24px 40px;
+  min-height: 100vh;
+  transition: margin 0.3s;
+}
+
+@media (max-width: 992px) { main { margin-left: 0; } }
+
+/* ── Shell & Card ─────────────────────────────── */
+.shell {
+  background: linear-gradient(to right, #02343F, #3E807D, #47918E);
+  border-radius: 22px;
+  padding: 22px;
+}
+
+.main-card {
+  background: #fff;
+  border-radius: var(--card-r);
+  overflow: hidden;
+}
+
+/* ── Topbar ───────────────────────────────────── */
+.card-topbar {
+  padding: 22px 28px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.card-topbar h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--brown);
+  margin: 0;
+}
+
+.topbar-icons {
+  color: #aaa;
+  font-size: 18px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.card-body-pad { padding: 24px 28px 30px; }
+
+/* ── Stats Row ────────────────────────────────── */
+.stats-row {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.stat-pill {
+  flex: 1;
+  min-width: 100px;
+  color: #fff;
+  border-radius: 14px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.stat-pill.total    { background: linear-gradient(135deg, #02343F, #3E807D); }
+.stat-pill.aktif    { background: linear-gradient(135deg, #16a34a, #4ade80); }
+.stat-pill.nonaktif { background: linear-gradient(135deg, #dc2626, #f87171); }
+
+.stat-pill .ico {
+  width: 42px;
+  height: 42px;
+  background: rgba(255, 255, 255, .2);
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.stat-pill .info small  { font-size: 11px; opacity: .85; display: block; }
+.stat-pill .info strong { font-size: 26px; font-weight: 700; display: block; line-height: 1.1; }
+
+/* ── Action Bar ───────────────────────────────── */
+.action-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+}
+
+.search-wrap input {
+  width: 100%;
+  padding: 10px 16px 10px 42px;
+  border: 1.5px solid #dde4e3;
+  border-radius: 10px;
+  font-size: 14px;
+  background: #f7fafa;
+  color: #333;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.search-wrap input:focus {
+  border-color: var(--teal-soft);
+  box-shadow: 0 0 0 3px rgba(95, 158, 154, .15);
+  background: #fff;
+}
+
+.search-wrap .si {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+  font-size: 15px;
+}
+
+.btn-cari {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--teal-mid);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+.btn-cari:hover { background: var(--teal-soft); transform: translateY(-1px); }
+
+.btn-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--teal-dark);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+.btn-add:hover { background: var(--teal-mid); transform: translateY(-1px); }
+
+/* ── Section Label ────────────────────────────── */
+.section-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+/* ── Teknisi List ─────────────────────────────── */
+.teknisi-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* override Bootstrap .card di dalam .teknisi-list */
+.teknisi-list .card {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #DFE9EA;
+  border: 1px solid #c6d8d8;
+  border-radius: 10px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.teknisi-list .card .left { flex-shrink: 0; }
+
+.teknisi-list .card .left img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 100px;
+  flex-shrink: 0;
+}
+
+.teknisi-list .card .left p:first-child {
+  font-weight: 800;
+  font-size: 14px;
+  color: #1a3333;
+}
+
+.teknisi-list .card .left p:last-child {
+  font-size: 12px;
+  color: #4a6868;
+}
+
+.teknisi-list .card .right p {
+  font-size: 13px;
+  color: #4a6868;
+}
+
+/* ── Toggle button (override Bootstrap btn-light) ── */
+.teknisi-list .card .right .btn-light {
+  background: transparent;
+  border: none;
+  padding: 4px 6px;
+  line-height: 1;
+}
+.teknisi-list .card .right .btn-light:hover {
+  background: rgba(0, 0, 0, .05);
+}
+.teknisi-list .card .right .bi-toggle-on,
+.teknisi-list .card .right .bi-toggle-off {
+  font-size: 1.5rem;
+  line-height: 1;
+}

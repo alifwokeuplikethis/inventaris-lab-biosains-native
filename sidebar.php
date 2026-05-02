@@ -1,8 +1,12 @@
- 
+ <?php
+ $halaman = isset($_GET['pages']) ? $_GET['pages'] : 'dashboard';
+
+
+ ?>
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple Admin Dashbaord</title>
+  <title>Assalamualaikum</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
   <link rel="stylesheet" href="css/bootstrap.css">
   <link rel="stylesheet" href="css/style.css">
@@ -25,12 +29,12 @@
       <nav class="navbar-dark">
         <ul class="navbar-nav sidenav">
           <li class="nav-link bordered px-3">
-            <a href="index.php" class="nav-link px-3 <?= ($current_page == 'index.php') ? 'active' : '' ?> ">
+            <a href="index.php" class="nav-link px-3 <?= ($halaman == 'dashboard') ? 'active' : '' ?> ">
               <span class="me-2"><i class="bi bi-speedometer2"></i></span>
               <span>Dashboard</span>
             </a>
           </li>
-          <li class="nav-link bordered px-3">
+          <!-- <li class="nav-link bordered px-3">
             <a class="nav-link px-3 sidebar-link" data-bs-toggle="collapse" href="#collapseExample" role="button"
               aria-expanded="false" aria-controls="collapseExample">
               <span class="me-2">
@@ -59,29 +63,35 @@
                 </ul>
               </div>
             </div>
-          </li>
+          </li> -->
           <li class="nav-link bordered px-3">
-            <a href="tambah_barang.php" class="nav-link px-3 <?= ($current_page == 'tambah_barang.php') ? 'active' : '' ?>">
+            <a href="index.php?pages=tambah_barang" class="nav-link px-3 <?= ($halaman == 'tambah_barang') ? 'active' : '' ?>">
               <span class="me-2"><i class="bi bi-intersect"></i></span>
               <span>Tambah Barang</span>
             </a>
           </li>
 
           <li class="nav-link bordered px-3">
-            <a href="programs.html" class="nav-link px-3">
+            <a href="index.php?pages=kadaluarsa" class="nav-link px-3 <?= ($halaman == 'kadaluarsa') ? 'active' : '' ?>">
               <span class="me-2"><i class="bi bi-journal-text"></i></span>
               <span>Kadaluarsa</span>
             </a>
           </li>
           <li class="nav-link bordered px-3">
-            <a href="profile.html" class="nav-link px-3">
+            <a href="index.php?pages=laporan" class="nav-link px-3 <?= ($halaman == 'laporan') ? 'active' : '' ?> ">
               <span class="me-2"><i class="bi bi-person"></i></span>
               <span>Laporan</span>
             </a>
           <li class="nav-link bordered px-3">
-            <a href="profile.html" class="nav-link px-3">
+            <a href="index.php?pages=akun_teknisi" class="nav-link px-3 <?= ($halaman == 'akun_teknisi') ? 'active' : '' ?> ">
               <span class="me-2"><i class="bi bi-person"></i></span>
               <span>Akun Teknisi</span>
+            </a>
+          </li>
+          <li class="nav-link bordered px-3">
+            <a href="index.php?pages=permintaan_teknisi" class="nav-link px-3 <?= ($halaman == 'permintaan_teknisi') ? 'active' : '' ?> ">
+              <span class="me-2"><i class="bi bi-person"></i></span>
+              <span>Permintaan Teknisi</span>
             </a>
           </li>
         </ul>
