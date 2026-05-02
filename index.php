@@ -1,65 +1,119 @@
+
 <?php
+// session_start();
+// require "AuthModel.php";
+// require "AuthController.php";
+
+// $model = new AuthModel();
+// $AuthController = new AuthController();
+// // ===============FILE ROUTING======================
+// $action = $_GET['action'] ?? null;
+// $publicAction = ['login', 'callback', 'login_page', 'post_login'];
+// if(!in_array($action, $publicAction)){
+//     if(empty($_SESSION['is_logged_in']) || !$model->cekInfo($_SESSION['user']['id']) ){
+//         header("Location: ?action=login_page");
+//     }
+// }
+
+// if ($action === 'login') {
+//     $AuthController->login();
+//     exit;
+// }
+
+// if ($action === 'callback') {
+//     $AuthController->callback();
+//     exit;
+// }
+
+// // ✅ HALAMAN LOGIN
+// if ($action === 'login_page') {
+//     header("Location: login.php");
+//     exit;
+// }
+// if ($action === 'post_login') {
+//     header("Location: post_login.php");
+//     exit;
+// }
+// if ($action === 'logout') {
+//     $AuthController->logout();
+// }
+// // ==================
+
+// if($action === 'register') {
+//     $AuthController->register();
+// }
+// if($action === 'save_profile') {
+//     $AuthController->save_profile();
+// }
+
+// // include "navbar.php";
+// // include "sidebar.php";
+
+// // 1. Tentukan halaman utama yang jadi background
+// $halaman = isset($_GET['pages']) ? $_GET['pages'] : 'dashboard';
+// $daftar_halaman = ['dashboard', 'kadaluarsa', 'tambah_barang', 'laporan', 'akun_teknisi', 'transaksi_stok', 'permintaan_teknisi'];
+
+// // Bungkus main content dalam div agar tidak berantakan dengan sidebar
+// echo '<div class="main-content">'; 
+// if (in_array($halaman, $daftar_halaman)) {
+//     if (file_exists("pages/$halaman.php")) {
+//         include "pages/$halaman.php";
+//     } else {
+//         echo "<h2 class='py-4 px-4'>Error 404: File tidak ditemukan!</h2>";
+//     }
+// } else {
+//     // Jika user mengakses pages=detail_bahan, kita paksa background-nya dashboard
+//     if ($halaman == 'detail_bahan') {
+//         include "pages/dashboard.php";
+//     } else {
+//         echo "<h2>Halaman Tidak Ditemukan!</h2>";
+//     }
+// }
+// echo '</div>';
+
+// // 2. LOGIKA MODAL (TIDAK BOLEH MASUK ELSE/IF DI ATAS)
+// // Modal harus di-include secara mandiri di paling bawah agar menumpuk di atas
+// if (isset($_GET['pages']) && $_GET['pages'] == 'detail_bahan') {
+//     if (file_exists("pages/detail_bahan.php")) {
+//         include "pages/detail_bahan.php";
+//     }
+// }
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 session_start();
+require "vendor/autoload.php";
+use Models\AuthModel;
+use Controllers\AuthController;
+use Dotenv\Dotenv;
 
-require "AuthController.php";
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
-$controller = new AuthController();
+// ambil routes
+$routes = require "Routes/web.php";
 
-// ✅ ROUTING OAUTH (HARUS DI ATAS)
-$action = $_GET['action'] ?? null;
+$model = new AuthModel();
 
-if ($action === 'login') {
-    $controller->login();
-    exit;
-}
+$action = $_GET['action'] ?? 'dashboard';
 
-if ($action === 'callback') {
-    $controller->callback();
-    exit;
-}
+// 🔐 auth check
+$publicRoutes = ['login', 'callback', 'login_page', 'post_login', 'register', 'save_profile'];
 
-// ✅ HALAMAN LOGIN
-if ($action === 'login_page') {
-    require "login.php";
-    exit;
-}
-
-// 🔒 CEK LOGIN (baru setelah itu)
-if (!isset($_SESSION['is_logged_in']) || $_SESSION['is_logged_in'] !== true) {
-    header('Location: index.php?action=login_page');
-    exit();
-}
-include "navbar.php";
-include "sidebar.php";
-
-// 1. Tentukan halaman utama yang jadi background
-$halaman = isset($_GET['pages']) ? $_GET['pages'] : 'dashboard';
-$daftar_halaman = ['dashboard', 'kadaluarsa', 'tambah_barang', 'laporan', 'akun_teknisi', 'transaksi_stok', 'permintaan_teknisi'];
-
-// Bungkus main content dalam div agar tidak berantakan dengan sidebar
-echo '<div class="main-content">'; 
-if (in_array($halaman, $daftar_halaman)) {
-    if (file_exists("pages/$halaman.php")) {
-        include "pages/$halaman.php";
-    } else {
-        echo "<h2 class='py-4 px-4'>Error 404: File tidak ditemukan!</h2>";
-    }
-} else {
-    // Jika user mengakses pages=detail_bahan, kita paksa background-nya dashboard
-    if ($halaman == 'detail_bahan') {
-        include "pages/dashboard.php";
-    } else {
-        echo "<h2>Halaman Tidak Ditemukan!</h2>";
-    }
-}
-echo '</div>';
-
-// 2. LOGIKA MODAL (TIDAK BOLEH MASUK ELSE/IF DI ATAS)
-// Modal harus di-include secara mandiri di paling bawah agar menumpuk di atas
-if (isset($_GET['pages']) && $_GET['pages'] == 'detail_bahan') {
-    if (file_exists("pages/detail_bahan.php")) {
-        include "pages/detail_bahan.php";
+if (!in_array($action, $publicRoutes)) {
+    if (empty($_SESSION['is_logged_in']) || !$model->cekInfo($_SESSION['user']['id'])) {
+        header("Location: ?action=login_page");
+        exit;
     }
 }
 
+// 🚀 eksekusi route
+if (isset($routes[$action])) {
+    require "views/components/header.php"; 
+    $routes[$action]();
+    require "views/components/footer.php"; 
+    exit;
+}
+
+echo "404 Not Found";
 ?>

@@ -1,4 +1,8 @@
-  <style>
+ <?php  
+require "./navbar.php";
+require "./sidebar.php";
+?>
+ <style>
     /* ===== GLOBAL ===== */
     body { 
       background: #f5f7f6; 
@@ -58,26 +62,6 @@
     .btn-stok:hover { background:#00796b; color:#fff; }
     .btn-hapus:hover { background:#e74c3c; color:#fff; }
 
-    /* ===== INPUT & DROPDOWN ===== */
-    .control {
-      border-radius: 8px;
-      border: 1px solid #dee2e6;
-    }
-    .control:focus {
-      border-color: #02343F;
-      box-shadow: 0 0 0 0.2rem rgba(2,52,63,0.15);
-    }
-    .btn-filter-dropdown {
-      border-radius: 8px;
-      border: 1px solid #06697f;
-      background: #fff;
-      color: #02343F;
-      font-weight: 600;
-    }
-    .btn-filter-dropdown:hover {
-      background: #02343F;
-      color: #fff;
-    }
 
     /* ===== TABEL CLEAN STYLING ===== */
     #table-dashboard thead th {
@@ -155,39 +139,12 @@
 
         <div class="card-header bg-white p-3 d-flex justify-content-between align-items-center flex-wrap gap-2" style="border-bottom: 1px solid #f0f0f0;">
           <h5 class="fw-bold text-main m-0">
-            <i class="bi bi-box-seam me-2"></i>Data Bahan Baku
+            <i class="bi bi-box-seam me-2"></i>List Permintaan Teknisi
           </h5>
 
           <!--  -->
           <div class="d-flex gap-2">
-            <div class="dropdown">
-              <button class="btn btn-filter-dropdown dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown">
-                <i class="bi bi-funnel me-1"></i> 
-                <span id="filterText">Rak</span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end shadow border-0">
-                <li><a class="dropdown-item filter-item" href="#" data-value="">1</a></li>
-                <li><a class="dropdown-item filter-item" href="#" data-value="Padat">2</a></li>
-                <li><a class="dropdown-item filter-item" href="#" data-value="Cair">3</a></li>
-                <li><a class="dropdown-item filter-item" href="#" data-value="Gas">4</a></li>
-              </ul>
-            </div>
-            <!--  -->
-
-          <div class="d-flex gap-2">
-            <div class="dropdown">
-              <button class="btn btn-filter-dropdown dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown">
-                <i class="bi bi-funnel me-1"></i> 
-                <span id="filterText">Semua</span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end shadow border-0">
-                <li><a class="dropdown-item filter-item" href="#" data-value="">Semua</a></li>
-                <li><a class="dropdown-item filter-item" href="#" data-value="Padat">Padat</a></li>
-                <li><a class="dropdown-item filter-item" href="#" data-value="Cair">Cair</a></li>
-                <li><a class="dropdown-item filter-item" href="#" data-value="Gas">Gas</a></li>
-              </ul>
-            </div>
-
+            
             <div class="position-relative">
               <input type="text" id="searchInput" class="form-control control ps-3 shadow-sm" placeholder="Cari data..." style="width:220px;">
             </div>
@@ -200,7 +157,7 @@
               <thead>
                 <tr>
                   <th width="50">No</th>
-                  <th>Nama Bahan</th>
+                  <th>Nama Teknisi</th>
                   <th>Satuan</th>
                   <th>Jenis</th>
                   <th>Qty</th>
@@ -216,7 +173,7 @@
                     document.write(`
                     <tr>
                       <td>${i}</td>
-                      <td class="fw-bold text-dark">Bahan Dummy ${i}</td>
+                      <td class="fw-bold text-dark">Teknisi ${i}</td>
                       <td>mL</td>
                       <td><span class="badge rounded-pill bg-light text-dark border">${jenis}</span></td>
                       <td class="text-main fw-bold">${i*15}</td>
@@ -243,6 +200,7 @@
   </div>
 </main>
 
+
 <script>
 $(document).ready(function(){
   // Inisialisasi DataTable dengan Pagination aktif
@@ -267,18 +225,6 @@ $(document).ready(function(){
     table.search(this.value).draw();
   });
 
-  // Fungsi Custom Filter berdasarkan Kolom 'Jenis' (Indeks Kolom ke-3, karena no urut itu ke-0)
-  $('.filter-item').on('click', function(e){
-    e.preventDefault();
-    let value = $(this).data('value');
-    let text = $(this).text();
-
-    $('#filterText').text(text);
-    table.column(3).search(value).draw();
-  });
+  
 });
 </script>
-
-<?php
-include "modalDashboard.php";
-?>

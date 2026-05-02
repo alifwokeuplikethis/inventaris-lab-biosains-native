@@ -1,7 +1,8 @@
 <?php
-require_once 'vendor/autoload.php';
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load();
+namespace Models;
+use PDO;
+use PDOException;
+
 // Database.php
 class Database {
     private $host;

@@ -1,4 +1,9 @@
-  <style>
+<?php  
+
+require LAYOUT_PATH . "sidebar.php";
+require LAYOUT_PATH . "navbar.php";
+?>
+<style>
     body {
       background-color: #f5f7f6;
       font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -78,8 +83,6 @@
       background: #a8a8a8; 
     }
   </style>
-</head>
-<body>
 
 <main class="mt-4 pt-3 form-tambah-barang mb-5">
   <div class="container-fluid px-4">
@@ -89,7 +92,7 @@
       <section class="p-3 shadow-sm mb-4 d-flex justify-content-between align-items-center" style="background-color: #ffffff; border-radius: 15px;">
         <div>
           <h2 class="mb-0 fw-bold" style="color: #2b6766; font-size: 1.4rem;">
-            <i class="fa fa-plus-circle me-2 text-secondary opacity-50"></i>Tambah Data Barang
+            <i class="fa fa-plus-circle me-2 text-secondary opacity-50"></i>Tambah Data Bahan
           </h2>
         </div>
         <div class="text-secondary fs-5 d-none d-sm-block">
@@ -100,47 +103,74 @@
 
       <div class="card border-0 p-4 custom-scrollbar shadow-lg" style="border-radius: 16px; background-color: #fcfdfd; max-height: 650px; overflow-y: auto;">
         
-        <form action="" method="POST">
+        <form action="?action=insert/tambah_bahan" method="POST" enctype="multipart/form-data">
           <div class="row g-5">
             
             <div class="col-md-6 border-end-md">
               <h5 class="fw-bold mb-4" style="color: #2b6766; border-bottom: 2px solid #eef2f0; padding-bottom: 10px;">
                 <i class="fa fa-box-open me-2"></i>Identitas Barang
               </h5>
-              
-              <div class="row mb-3">
-                <div class="col-sm-6">
-                  <label class="form-label fw-semibold text-secondary small">No. ID Barang</label>
-                  <input type="text" class="form-control input-custom" placeholder="Contoh: CHM-001" required>
-                </div>
-                <div class="col-sm-6 mt-3 mt-sm-0">
-                  <label class="form-label fw-semibold text-secondary small">Satuan Utama</label>
-                  <select class="form-select input-custom" required>
-                     <option value="" selected disabled>Pilih satuan...</option>
-                     <option>Liter (L)</option>
-                     <option>MiliLiter (ml)</option>
-                     <option>Kilogram (kg)</option>
-                     <option>Gram (g)</option>
-                     <option>Pcs / Botol</option>
-                  </select>
-                </div>
-              </div>
-              
-              <div class="mb-3">
+
+                <div class="row mb-3">
+              <div class="col-sm-6">
                 <label class="form-label fw-semibold text-secondary small">Nama Bahan Kimia</label>
-                <input type="text" class="form-control input-custom" placeholder="Masukkan nama bahan" required>
+                <input type="text" 
+                      class="form-control input-custom" 
+                      placeholder="Masukkan nama bahan" 
+                      name="nama_bahan" 
+                      required>
               </div>
+
+              <div class="col-sm-6 mt-3 mt-sm-0">
+                <label class="form-label fw-semibold text-secondary small">Volume per Botol</label>
+                <input type="number" 
+                      step="0.01"
+                      class="form-control input-custom" 
+                      placeholder="Contoh: 500 ml" 
+                      name="volume_per_botol" 
+                      required>
+              </div>
+            </div>
               
+
+
               <div class="row mb-3">
                 <div class="col-sm-6">
                   <label class="form-label fw-semibold text-secondary small">Rumus Kimia</label>
-                  <input type="text" class="form-control input-custom" placeholder="Cth: CHCl₃">
+                  <input type="text" class="form-control input-custom" placeholder="Cth: CHCl₃" name="rumus">
                 </div>
                 <div class="col-sm-6 mt-3 mt-sm-0">
                   <label class="form-label fw-semibold text-secondary small">Merk / Katalog</label>
-                  <input type="text" class="form-control input-custom" placeholder="Cth: Merck">
+                  <input type="text" class="form-control input-custom" placeholder="Cth: Merck" name="merk">
                 </div>
               </div>
+
+
+
+                      <div class="row mb-3">
+              <div class="col-sm-6">
+                <label class="form-label fw-semibold text-secondary small">Jenis</label>
+                <select class="form-select input-custom" name="jenis" required>
+                  <option value="" selected disabled>Pilih jenis...</option>
+                  <option value="padat">Padat</option>
+                  <option value="cair">Cair</option>
+                  <option value="gas">Gas</option>
+                </select>
+              </div>
+
+              <div class="col-sm-6 mt-3 mt-sm-0">
+                <label class="form-label fw-semibold text-secondary small">Satuan</label>
+                <select class="form-select input-custom" name="satuan" required>
+                  <option value="" selected disabled>Pilih satuan...</option>
+                  <option value="L">Liter (L)</option>
+                  <option value="ml">MiliLiter (ml)</option>
+                  <option value="kg">Kilogram (kg)</option>
+                  <option value="g">Gram (g)</option>
+                  <option value="pcs">Pcs / Botol</option>
+                </select>
+              </div>
+            </div>
+        
 
               <div class="mb-2 mt-4">
                 <label class="form-label fw-semibold text-secondary small">Upload Foto Bahan</label>
@@ -149,7 +179,7 @@
                   <p class="mb-0 text-muted small fw-medium" id="uploadText">Klik atau Drag & Drop foto di sini</p>
                   <p class="text-muted" style="font-size: 0.75rem;" id="uploadSubText">Format didukung: JPG, PNG, WEBP (Maks 2MB)</p>
                   
-                  <input type="file" id="fileInput" accept="image/*">
+                  <input type="file" id="fileInput" accept="image/*" name="foto_bahan">
                   <img id="previewImage" src="" alt="Preview" style="display: none; max-height: 140px; max-width: 100%; border-radius: 8px; margin: 0 auto; object-fit: contain;">
                 </div>
               </div>
@@ -163,33 +193,28 @@
               <div class="row">
                 <div class="col-sm-6 mb-3">
                   <label class="form-label fw-semibold text-secondary small">Tanggal Penerimaan</label>
-                  <input type="date" class="form-control input-custom" required>
+                  <input type="date" class="form-control input-custom" name="tgl_penerimaan" required>
                 </div>
                 <div class="col-sm-6 mb-3">
                   <label class="form-label fw-bold small text-danger">Tanggal Kadaluarsa</label>
-                  <input type="date" class="form-control input-custom" style="border-color: #f8d7da; background-color: #fff9fa;" required>
+                  <input type="date" class="form-control input-custom" name="tgl_kadaluarsa" style="border-color: #f8d7da; background-color: #fff9fa;" required>
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-sm-6 mb-3">
                   <label class="form-label fw-semibold text-secondary small">Kuantitas Awal</label>
-                  <input type="number" class="form-control input-custom" placeholder="0" min="0" required>
+                  <input type="number" class="form-control input-custom" name="qty" placeholder="0" min="0" required>
                 </div>
                 <div class="col-sm-6 mb-3">
                   <label class="form-label fw-semibold text-secondary small">Lokasi / Rak Penyimpanan</label>
-                  <select class="form-select input-custom" required>
+                  <select class="form-select input-custom" name="rak" required>
                     <option value="" selected disabled>Pilih lokasi rak</option>
-                    <option>Lemari Asam - A1</option>
-                    <option>Rak Reagen - B2</option>
-                    <option>Gudang Bawah - C1</option>
+                    <option value="Lemari Asam">Lemari Asam - A1</option>
+                    <option value="Rak Reagen">Rak Reagen - B2</option>
+                    <option value="Gudang Bawah">Gudang Bawah - C1</option>
                   </select>
                 </div>
-              </div>
-
-              <div class="mb-3 mt-2">
-                <label class="form-label fw-semibold text-secondary small">Catatan / Keterangan Khusus (Opsional)</label>
-                <textarea class="form-control input-custom" rows="5" placeholder="Tambahkan catatan khusus mengenai kondisi barang, instruksi penyimpanan, link MSDS, dsb..."></textarea>
               </div>
 
             </div>
@@ -248,6 +273,3 @@
     subText.style.display = 'block';
   }
 </script>
-
-</body>
-</html>

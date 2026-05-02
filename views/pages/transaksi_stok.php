@@ -1,3 +1,8 @@
+<?php  
+
+require LAYOUT_PATH . "sidebar.php";
+require LAYOUT_PATH . "navbar.php";
+?>
 <style>
 .input-custom {
   border: 1px solid #d1d9d9;

@@ -1,19 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acc Akun Teknisi</title>
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/akun_teknisi.css">
-  
-</head>
-<body>
+<?php  
 
+require LAYOUT_PATH . "sidebar.php";
+require LAYOUT_PATH . "navbar.php";
+?>
 <main>
     <div class="container-fluid px-0">
         <div class="shell">
@@ -179,5 +168,3 @@ function toggleStatus(btn, badgeId) {
     }
 }
 </script>
-</body>
-</html>

@@ -1,4 +1,8 @@
+<?php  
 
+require LAYOUT_PATH . "sidebar.php";
+require LAYOUT_PATH . "navbar.php";
+?>
   <style>
     /* Tambahkan ini untuk memastikan variabel CSS terbaca jika tidak ada di style.css */
     :root {

@@ -1,4 +1,3 @@
-
 <!-- MODAL SECTION  -->
 <div class="modal fade" id="contohModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered"> <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">

@@ -1,15 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kadaluarsa</title>
+<?php  
 
-  <!-- BOOTSTRAP -->
-  <link rel="stylesheet" href="css/bootstrap.css">
-
-  <!-- FONT AWESOME -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+require LAYOUT_PATH . "sidebar.php";
+require LAYOUT_PATH . "navbar.php";
+?>
 
   <style>
     /* ================= BODY ================= */
@@ -120,14 +113,8 @@
     }
 
   </style>
-</head>
 
 <body>
-
-<?php
-/* ================= INCLUDE ================= */
-include "sidebar.php";
-?>
 
 <!-- ================= MAIN ================= -->
 <main class="mt-5 pt-3">
@@ -252,6 +239,3 @@ document.getElementById("searchInput").addEventListener("keyup", function() {
   });
 });
 </script>
-
-</body>
-</html>

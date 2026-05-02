@@ -1,4 +1,6 @@
 <?php
+namespace Services;
+use Models\Database;
 
 interface IOAuthProvider {
     public function getAuthorizationUrl(): string;
@@ -9,7 +11,7 @@ interface IOAuthProvider {
 
 class GoogleOAuthProvider implements IOAuthProvider{
 
-    private Google\Client $client;
+    private \Google\Client $client;
 
     public function __construct(string $clientId, string $clientSecret, string $redirectUri){
         $this->client = new \Google\Client();
@@ -42,11 +44,13 @@ class GoogleOAuthProvider implements IOAuthProvider{
         $oauth2 = new \Google\Service\Oauth2($this->client);
         $userInfo = $oauth2->userinfo->get();
 
+
         // Standarisasi output array agar konsisten dengan provider lain nantinya
         return [
             'id' => $userInfo->id,
             'email' => $userInfo->email,
-            'name' => $userInfo->name
+            'nama' => $userInfo->name,
+            'foto_pengguna' => $userInfo->picture
         ];
     }
 }
@@ -76,7 +80,6 @@ class AuthManager {
         try {
             $sessionTokens = $this->provider->authenticate($code);
             $userProfile = $this->provider->getUserProfile($sessionTokens['access_token']);
-            
             // Di sini kamu bisa tambahkan logika untuk cek user di database,
             // set $_SESSION, buat JWT, dll.
             

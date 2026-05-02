@@ -28,6 +28,7 @@ class ComposerStaticInit5cd48b6645860e6f71f44390d4549abe
             'Symfony\\Polyfill\\Php80\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Ctype\\' => 23,
+            'Services\\' => 9,
         ),
         'P' => 
         array (
@@ -41,6 +42,7 @@ class ComposerStaticInit5cd48b6645860e6f71f44390d4549abe
         'M' => 
         array (
             'Monolog\\' => 8,
+            'Models\\' => 7,
         ),
         'G' => 
         array (
@@ -60,6 +62,10 @@ class ComposerStaticInit5cd48b6645860e6f71f44390d4549abe
         array (
             'Dotenv\\' => 7,
         ),
+        'C' => 
+        array (
+            'Controllers\\' => 12,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -78,6 +84,10 @@ class ComposerStaticInit5cd48b6645860e6f71f44390d4549abe
         'Symfony\\Polyfill\\Ctype\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
+        'Services\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/Services',
         ),
         'Psr\\Log\\' => 
         array (
@@ -107,6 +117,10 @@ class ComposerStaticInit5cd48b6645860e6f71f44390d4549abe
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
+        'Models\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/Models',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (
@@ -143,6 +157,10 @@ class ComposerStaticInit5cd48b6645860e6f71f44390d4549abe
         'Dotenv\\' => 
         array (
             0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
+        ),
+        'Controllers\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/Controllers',
         ),
     );
 

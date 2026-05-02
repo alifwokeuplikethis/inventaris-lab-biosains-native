@@ -1,20 +1,7 @@
- <?php
- $halaman = isset($_GET['pages']) ? $_GET['pages'] : 'dashboard';
-
-
- ?>
- <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Assalamualaikum</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="css/bootstrap.css">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/dataTables.bootstrap5.min.css">
-</head>
 
 
  <?php
+ $halaman = isset($_GET['action']) ? $_GET['action'] : 'dashboard';
  $current_page = basename($_SERVER['PHP_SELF']);
  ?>
  <!-- sidebar -->
@@ -65,31 +52,32 @@
             </div>
           </li> -->
           <li class="nav-link bordered px-3">
-            <a href="index.php?pages=tambah_barang" class="nav-link px-3 <?= ($halaman == 'tambah_barang') ? 'active' : '' ?>">
+            <a href="index.php?action=tambah_bahan" class="nav-link px-3 <?= ($halaman == 'tambah_bahan') ? 'active' : '' ?>">
               <span class="me-2"><i class="bi bi-intersect"></i></span>
-              <span>Tambah Barang</span>
+              <span>Tambah Bahan</span>
             </a>
           </li>
 
           <li class="nav-link bordered px-3">
-            <a href="index.php?pages=kadaluarsa" class="nav-link px-3 <?= ($halaman == 'kadaluarsa') ? 'active' : '' ?>">
+            <a href="index.php?action=kadaluarsa" class="nav-link px-3 <?= ($halaman == 'kadaluarsa') ? 'active' : '' ?>">
               <span class="me-2"><i class="bi bi-journal-text"></i></span>
               <span>Kadaluarsa</span>
             </a>
           </li>
           <li class="nav-link bordered px-3">
-            <a href="index.php?pages=laporan" class="nav-link px-3 <?= ($halaman == 'laporan') ? 'active' : '' ?> ">
+            <a href="index.php?action=laporan" class="nav-link px-3 <?= ($halaman == 'laporan') ? 'active' : '' ?> ">
               <span class="me-2"><i class="bi bi-person"></i></span>
               <span>Laporan</span>
             </a>
+          </li>
           <li class="nav-link bordered px-3">
-            <a href="index.php?pages=akun_teknisi" class="nav-link px-3 <?= ($halaman == 'akun_teknisi') ? 'active' : '' ?> ">
+            <a href="index.php?action=akun_teknisi" class="nav-link px-3 <?= ($halaman == 'akun_teknisi') ? 'active' : '' ?> ">
               <span class="me-2"><i class="bi bi-person"></i></span>
               <span>Akun Teknisi</span>
             </a>
           </li>
           <li class="nav-link bordered px-3">
-            <a href="index.php?pages=permintaan_teknisi" class="nav-link px-3 <?= ($halaman == 'permintaan_teknisi') ? 'active' : '' ?> ">
+            <a href="index.php?action=permintaan_teknisi" class="nav-link px-3 <?= ($halaman == 'permintaan_teknisi') ? 'active' : '' ?> ">
               <span class="me-2"><i class="bi bi-person"></i></span>
               <span>Permintaan Teknisi</span>
             </a>
@@ -100,7 +88,3 @@
   </div>
   <!-- sidebar end -->
 
-    <script src="js/jquery-3.5.1.js"></script>
-  <script src="js/jquery.dataTables.min.js"></script>
-  <script src="js/dataTables.bootstrap5.min.js"></script>
-  <script src="js/bootstrap.bundle.min.js"></script>
