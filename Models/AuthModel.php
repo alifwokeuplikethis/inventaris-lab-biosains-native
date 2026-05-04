@@ -5,6 +5,7 @@ use PDO;
 use Exception;
 
 class AuthModel{
+    private PDO $conn;
     public function __construct(){
         $this->conn = (new Database())->getConnection();
             if (!$this->conn) {

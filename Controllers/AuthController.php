@@ -8,6 +8,7 @@ use Services\AuthManager;
 
 class AuthController {
     private AuthManager $authManager;
+    private AuthModel $model;
 
     public function __construct() {
         $googleProvider = new GoogleOAuthProvider(

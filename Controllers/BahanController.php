@@ -2,8 +2,10 @@
 namespace Controllers;
 use Models\BahanModel;
 use Models\Database;
-
+use PDO;
 class BahanController{
+    private BahanModel $model;
+    private PDO $conn;
     public function __construct(){
         $this->model = (new BahanModel());
         $this->conn = (new Database())->getConnection();
