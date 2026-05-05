@@ -3,7 +3,6 @@ namespace Controllers;
 use Models\BahanModel;
 use Models\Database;
 use PDO;
-
 class BahanController{
     private BahanModel $model;
     private PDO $conn;

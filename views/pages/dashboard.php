@@ -191,7 +191,6 @@ Swal.fire({
             </div>
             <!--  -->
 
-          <div class="d-flex gap-2">
             <div class="dropdown">
               <button class="btn btn-filter-dropdown dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown">
                 <i class="bi bi-funnel me-1"></i> 

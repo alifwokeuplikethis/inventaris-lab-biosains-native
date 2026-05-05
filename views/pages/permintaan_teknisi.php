@@ -1,6 +1,6 @@
  <?php  
-require "./navbar.php";
-require "./sidebar.php";
+require LAYOUT_PATH . "sidebar.php";
+require LAYOUT_PATH . "navbar.php";
 ?>
  <style>
     /* ===== GLOBAL ===== */

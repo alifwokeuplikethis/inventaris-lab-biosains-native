@@ -78,13 +78,11 @@
 //         include "pages/detail_bahan.php";
 //     }
 // }
-
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 session_start();
 require "vendor/autoload.php";
 use Models\AuthModel;
-use Controllers\AuthController;
 use Dotenv\Dotenv;
 
 $dotenv = Dotenv::createImmutable(__DIR__);
