@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pengajuan Bahan</title>
-
-
 <?php
-include "navbar.php";
-include "sidebar.php";
+require LAYOUT_PATH . "sidebar.php";
+require LAYOUT_PATH . "navbar.php";
 ?>
 
 <style>

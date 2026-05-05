@@ -77,7 +77,7 @@
             </a>
           </li>
           <li class="nav-link bordered px-3">
-            <a href="index.php?action=permintaan_teknisi" class="nav-link px-3 <?= ($halaman == 'permintaan_teknisi') ? 'active' : '' ?> ">
+            <a href="index.php?action=pengajuan" class="nav-link px-3 <?= ($halaman == 'pengajuan') ? 'active' : '' ?> ">
               <span class="me-2"><i class="bi bi-person"></i></span>
               <span>Permintaan Teknisi</span>
             </a>

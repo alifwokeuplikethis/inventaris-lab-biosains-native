@@ -25,5 +25,7 @@ return [
     'kadaluarsa' => fn() => require PAGES_PATH . 'kadaluarsa.php',
     'tambah_bahan' => fn() => require PAGES_PATH . 'tambah_bahan.php',
     'laporan' => fn() => require PAGES_PATH . 'laporan.php',
+    'akun_teknisi' => fn() => require PAGES_PATH . 'akun_teknisi.php',
+    'pengajuan' => fn() => require PAGES_PATH . 'pengajuan.php',
 ];
 ?>
