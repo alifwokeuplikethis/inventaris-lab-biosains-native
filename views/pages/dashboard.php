@@ -115,19 +115,19 @@ require LAYOUT_PATH . "navbar.php";
     }
   </style>
   
-<?php if( isset($_SESSION['success'])):?>
-  <script>
+  <?php if(isset($_SESSION['alert'])): ?>
+<script>
 Swal.fire({
-    icon: 'success',
-    title: 'Selamat Datang!',
-    text: '<?= $_SESSION['success']; ?>',
+    icon: '<?= $_SESSION['alert']['icon']; ?>',
+    title: '<?= $_SESSION['alert']['title']; ?>',
+    text: '<?= $_SESSION['alert']['text']; ?>',
     showConfirmButton: false,
-    timer: 5000, // 2 detik
+    timer: 3000,
     timerProgressBar: true
-})
+});
 </script>
-<?php unset($_SESSION['success']);?>
-<?php endif;?>
+<?php unset($_SESSION['alert']); ?>
+<?php endif; ?>
 
 <main class="py-4">
   <div class="container-fluid px-4">
@@ -234,17 +234,17 @@ Swal.fire({
                     <td><?= $row['satuan'] ?></td>
                     <td>
                       <span class="badge rounded-pill bg-light text-dark border">
-                        <?= $row['jenis'] ?>
+                        <?= $row['jenis']; ?>
                       </span>
                     </td>
 
                     <td class="text-main fw-bold">
-                      <?= number_format($row['qty'], 2) ?>
+                      <?= $row['qty']; ?>
                     </td>
 
                     <td>
                       <?php if($row['foto_bahan']): ?>
-                        <img src="images/uploads/<?= $row['foto_bahan'] ?>" width="200">
+                        <img src="<?= BASE_URL ?>/images/uploads/<?= $row['foto_bahan'] ?>" width="200">
                       <?php else: ?>
                         <i class="bi bi-image text-muted"></i>
                       <?php endif; ?>
@@ -260,8 +260,8 @@ Swal.fire({
 
                     <td>
                       <div class="d-flex gap-2">
-                        <button class="btn-circle btn-detail"><i class="bi bi-eye"></i></button>
-                        <button class="btn-circle btn-stok"><i class="bi bi-plus"></i></button>
+                        <button class="btn-circle btn-detail" data-bs-toggle="modal" data-bs-target="#contohModal"><i class="bi bi-eye"></i></button>
+                        <button class="btn-circle btn-stok" onclick="window.location.href='?action=tambah_stok&id_bahan=<?= $row['id'] ?>'"><i class="bi bi-plus"></i></button>
                         <button class="btn-circle btn-hapus"><i class="bi bi-trash"></i></button>
                       </div>
                     </td>

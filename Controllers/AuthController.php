@@ -46,7 +46,12 @@ class AuthController {
                     $_SESSION['is_logged_in'] = true;
                     $_SESSION['user'] = $result['profile'];
                     $_SESSION['user']['id_normal'] = $data['id'];
-                    $_SESSION['success'] = 'Selamat datang sir .' . $_SESSION['user']['nama'];
+                    $_SESSION['alert'] = [
+                    'icon' => 'success',
+                    'title' => 'Login Berhasil',
+                    'text' => 'Selamat datang sir ' . $_SESSION['user']['nama'],
+                    'timer' => 3000
+                    ];
                     return header("Location: ?pages=dashboard");
                     exit;
                 }else{

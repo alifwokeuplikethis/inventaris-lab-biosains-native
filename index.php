@@ -85,6 +85,7 @@ require "vendor/autoload.php";
 use Models\AuthModel;
 use Dotenv\Dotenv;
 
+
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 

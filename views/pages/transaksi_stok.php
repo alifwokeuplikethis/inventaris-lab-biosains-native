@@ -74,12 +74,18 @@ require LAYOUT_PATH . "navbar.php";
 <div class="info-box mb-4">
   <div class="row">
     <div class="col-md-6">
-      <strong>Nama Barang:</strong> Chloroform (CHCl₃)<br>
-      <strong>Kode:</strong> CHM-001
+      <strong>Nama Barang:</strong> <?= $infoBahan['nama_bahan']; ?><br>
+      <strong>Kode:</strong> <?= $infoBahan['merk']; ?>
     </div>
     <div class="col-md-6 text-md-end">
       <strong>Stok Saat Ini:</strong> 
-      <span id="stokText" class="fw-bold text-success">120 ml</span>
+      <span id="stokText" class="fw-bold text-success"><?php
+      foreach ($data as $d) {
+        if ($d['id'] == $id_bahan) {
+            echo $d['total_volume'];
+        }
+    }
+    ?> ml</span>
     </div>
   </div>
 </div>
@@ -90,7 +96,7 @@ require LAYOUT_PATH . "navbar.php";
   <button type="button" class="btn btn-toggle" id="btnKurangi">Kurangi</button>
 </div>
 
-<form method="POST">
+<form method="POST" action="?action=prosesStok&id_bahan=<?= $_GET['id_bahan']; ?>">
 
 <input type="hidden" name="aksi" id="aksi" value="tambah">
 
@@ -100,20 +106,30 @@ require LAYOUT_PATH . "navbar.php";
 
 <!-- TAMBAH -->
 <div id="formTambah">
-  <label class="form-label small text-secondary">Jumlah Masuk</label>
-  <input type="number" name="jumlah" class="form-control input-custom mb-3" required>
+  <label class="form-label small text-secondary">Jumlah Botol Masuk</label>
+  <input type="number" name="qty" class="form-control input-custom mb-3">
 
-  <label class="form-label small text-secondary">Tanggal</label>
-  <input type="date" name="tanggal" class="form-control input-custom">
+  <label class="form-label small text-secondary">Tanggal Penerimaan</label>
+  <input type="date" name="tgl_penerimaan" class="form-control input-custom">
+
+  <label class="form-label small text-secondary">Tanggal Kadaluarsa</label>
+  <input type="date" name="tgl_kadaluarsa" class="form-control input-custom">
+  <label class="form-label fw-semibold text-secondary small">Lokasi / Rak Penyimpanan</label>
+                  <select class="form-select input-custom" name="rak">
+                    <option value="" selected disabled>Pilih lokasi rak</option>
+                    <option value="Lemari Asam">Lemari Asam - A1</option>
+                    <option value="Rak Reagen">Rak Reagen - B2</option>
+                    <option value="Gudang Bawah">Gudang Bawah - C1</option>
+                  </select>
 </div>
 
 <!-- KURANGI -->
 <div id="formKurangi" style="display:none;">
-  <label class="form-label small text-secondary">Jumlah Keluar</label>
+  <label class="form-label small text-secondary">Jumlah Volume Keluar</label>
   <input type="number" name="jumlah_keluar" class="form-control input-custom mb-3">
-
+<!-- 
   <label class="form-label small text-secondary">Alasan</label>
-  <input type="text" name="alasan" class="form-control input-custom" placeholder="Contoh: Praktikum">
+  <input type="text" name="alasan" class="form-control input-custom" placeholder="Contoh: Praktikum"> -->
 </div>
 
 </div>
