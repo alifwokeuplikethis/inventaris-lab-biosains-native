@@ -50,19 +50,19 @@
   </style>
 </head>
 <body>
-<?php if( isset($_SESSION['success'])):?>
-  <script>
+ <?php if(isset($_SESSION['alert'])): ?>
+<script>
 Swal.fire({
-    icon: 'success',
-    title: 'Registrasi Berhasil!',
-    text: '<?= $_SESSION['success']; ?>',
+    icon: '<?= $_SESSION['alert']['icon']; ?>',
+    title: '<?= $_SESSION['alert']['title']; ?>',
+    text: '<?= $_SESSION['alert']['text']; ?>',
     showConfirmButton: false,
-    timer: 5000, // 2 detik
+    timer: <?= $_SESSION['alert']['timer']; ?>,
     timerProgressBar: true
-})
+});
 </script>
-<?php unset($_SESSION['success']);?>
-<?php endif;?>
+<?php unset($_SESSION['alert']); ?>
+<?php endif; ?>
 <section class="min-vh-100 d-flex flex-column">
   
   <div class="container-fluid flex-grow-1 d-flex align-items-center justify-content-center py-5">
@@ -102,7 +102,7 @@ Swal.fire({
           <p class="text-center fw-bold mx-3 mb-0 text-muted">Belum Punya Akses?</p>
         </div>
 
-        <form method="POST" action="/inventory-revisi/?action=register">
+        <form method="POST" action="<?= BASE_URL ?>/?action=register">
           <div class="mb-3">
             <h5 class="fw-bold mb-1">Daftar Whitelist</h5>
             <p class="small text-muted mb-3">Masukkan email Anda untuk meminta akses. Anda baru bisa login setelah Admin melakukan persetujuan.</p>

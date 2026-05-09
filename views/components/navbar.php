@@ -23,7 +23,7 @@
         <ul class="navbar-nav ms-auto me-md-4 mb-2 mb-lg-0">
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="fa-regular fa-user"></i> Admin
+              <i class="fa-regular fa-user"></i> <?= $_SESSION['user']['peran'] ?>
             </a>
             <ul class="dropdown-menu dropdown-menu-end border-0 shadow">
               <li><a class="dropdown-item" href="#">Edit Profile</a></li>

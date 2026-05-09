@@ -96,7 +96,7 @@ require LAYOUT_PATH . "navbar.php";
   <button type="button" class="btn btn-toggle" id="btnKurangi">Kurangi</button>
 </div>
 
-<form method="POST" action="?action=prosesStok&id_bahan=<?= $_GET['id_bahan']; ?>">
+<form id="formStok" method="POST" action="?action=prosesStok&id_bahan=<?= $_GET['id_bahan']; ?>">
 
 <input type="hidden" name="aksi" id="aksi" value="tambah">
 
@@ -135,11 +135,15 @@ require LAYOUT_PATH . "navbar.php";
 </div>
 
 </div>
+<input type="hidden" name="id_bahan" value="<?= $_GET['id_bahan']; ?>">
 
 <div class="d-flex justify-content-end mt-4 pt-3" style="border-top:1px solid #eef2f0;">
-  <button type="submit" class="btn btn-tambah px-4 py-2 rounded-pill">
-    <i class="fa fa-save me-2"></i>Simpan
-  </button>
+  <button type="button" id="formBtnKurang" class="btn btn-tambah px-4 py-2 rounded-pill d-none" onclick="previewStok()">
+  <i class="fa fa-save me-2"></i>Simpan
+</button>
+  <button type="submit" id="formBtnTambah" class="btn btn-tambah px-4 py-2 rounded-pill">
+  <i class="fa fa-save me-2"></i>Simpan
+</button>
 </div>
 
 </form>
@@ -149,25 +153,103 @@ require LAYOUT_PATH . "navbar.php";
 </main>
 
 <script>
+  let lastPreviewData = [];
+function previewStok() {
+
+    const form = document.getElementById('formStok');
+    const formData = new FormData(form);
+
+    const aksi = document.getElementById('aksi').value;
+
+    console.log("AKSI:", aksi);
+
+    // ➕ TAMBAH = langsung submit
+    if (aksi === 'tambah') {
+        form.submit();
+        return;
+    }
+
+    // ➖ KURANG = preview dulu
+fetch('?action=previewKurangiStok', {
+    method: 'POST',
+    body: formData
+})
+.then(res => {
+    console.log("RAW RESPONSE:", res);
+    return res.json(); // 🔥 WAJIB RETURN
+})
+.then(res => {
+    lastPreviewData = res.data;
+    console.log(res);
+
+    if (res.status === 'error') {
+        alert(res.message);
+        return;
+    }
+
+    let html = `<ul class="list-group">`;
+
+    res.data.forEach(item => {
+        html += `
+            <li class="list-group-item">
+                Rak <b>${item.rak}</b> → ${item.diambil} ml
+                <small class="text-muted">(exp: ${item.tgl_kadaluarsa})</small>
+            </li>
+        `;
+    });
+
+    html += `</ul>`;
+
+      document.getElementById('previewBody').innerHTML = html;
+
+      const modal = new bootstrap.Modal(
+          document.getElementById('previewModal')
+      );
+
+      modal.show();
+      document.getElementById('confirmBtn').onclick = function () {
+      form.submit();
+  };
+});
+}
+
 const btnTambah = document.getElementById('btnTambah');
 const btnKurangi = document.getElementById('btnKurangi');
+
+const formBtnTambah = document.getElementById("formBtnTambah");
+const formBtnKurang = document.getElementById("formBtnKurang");
 const formTambah = document.getElementById('formTambah');
 const formKurangi = document.getElementById('formKurangi');
 const aksi = document.getElementById('aksi');
 
 btnTambah.onclick = () => {
+
   btnTambah.classList.add('active');
   btnKurangi.classList.remove('active');
+
+  formBtnTambah.classList.remove('d-none');
+  formBtnKurang.classList.add('d-none');
+
   formTambah.style.display = 'block';
   formKurangi.style.display = 'none';
+
   aksi.value = 'tambah';
 }
 
 btnKurangi.onclick = () => {
+
   btnKurangi.classList.add('active');
   btnTambah.classList.remove('active');
+
+  formBtnTambah.classList.add('d-none');
+  formBtnKurang.classList.remove('d-none');
+
   formTambah.style.display = 'none';
   formKurangi.style.display = 'block';
+
   aksi.value = 'kurangi';
 }
 </script>
+<?php
+include "Modal/modalPreview.php";
+?>

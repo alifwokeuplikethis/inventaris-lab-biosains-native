@@ -92,7 +92,7 @@ require LAYOUT_PATH . "navbar.php";
             <div>
               <small>Akan Kadaluarsa</small>
               <div>
-                <strong>1</strong>
+                <strong><?= $totalHampir ?></strong>
               </div>
             </div>
           </div>
@@ -104,7 +104,7 @@ require LAYOUT_PATH . "navbar.php";
             <div>
               <small>Sudah Kadaluarsa</small>
               <div>
-                <strong>xxx</strong>
+                <strong><?= $totalExpired ?></strong>
               </div>
             </div>
           </div>
@@ -115,20 +115,74 @@ require LAYOUT_PATH . "navbar.php";
       <!-- ===== CARD ===== -->
       <div class="card border-0 shadow-lg" style="border-radius:18px; overflow:hidden;">
 
-        <!-- HEADER -->
-        <div class="card-header bg-white p-3 d-flex justify-content-between align-items-center">
+       <!-- HEADER -->
+<div class="card-header bg-white p-3">
 
-          <h5 class="fw-bold text-main m-0">
-            <i class="bi bi-clock-history me-2"></i>Data Kadaluarsa
-          </h5>
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
 
-          <!-- SEARCH -->
-          <input type="text" id="searchInput" 
-            class="form-control control shadow-sm" 
-            placeholder="Cari data..." 
-            style="width:220px;">
+        <h5 class="fw-bold text-main m-0">
+            <i class="bi bi-clock-history me-2"></i>
+            Data Kadaluarsa
+        </h5>
+
+        <div class="d-flex align-items-center gap-2">
+
+            <!-- FILTER -->
+            <div class="dropdown">
+
+                <button 
+                    class="btn btn-outline-secondary shadow-sm dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                >
+                    <i class="bi bi-funnel me-1"></i>
+                    <span id="filterText">Semua Status</span>
+                </button>
+
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+
+                    <li>
+                        <a class="dropdown-item filter-item" href="#" data-value="" data-column="7">
+                            Semua
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item filter-item" href="#" data-value="expired" data-column="7">
+                            Expired
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item filter-item" href="#" data-value="hampir kadaluarsa" data-column="7"> 
+                            Hampir Kadaluarsa
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item filter-item" href="#" data-value="aman" data-column="7"> 
+                            Aman
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <!-- SEARCH -->
+            <input 
+                type="text"
+                id="searchInput"
+                class="form-control control shadow-sm"
+                placeholder="Cari data..."
+                style="width:220px;"
+            >
 
         </div>
+
+    </div>
+
+</div>
 
         <!-- TABLE -->
         <div class="card-body p-4 bg-white">
@@ -139,56 +193,49 @@ require LAYOUT_PATH . "navbar.php";
               <thead>
                 <tr>
                   <th>No</th>
-                  <th>ID Barang</th>
-                  <th>Tanggal Masuk</th>
+                  <th>ID Bahan</th>
                   <th>Nama Bahan</th>
-                  <th>Kategori</th>
+                  <th>Tanggal Penerimaan</th>
                   <th>Kadaluarsa</th>
-                  <th>Jumlah</th>
+                  <th>Rak</th>
+                  <th>Status</th>
+                  <th>Status Kadaluarsa</th>
                 </tr>
               </thead>
 
               <tbody>
+                <?php $no = 0;?>
+            <?php foreach ($dataKadaluarsa as $item): ?>
+              <?php
+                $no++;
+                
+                if ($item['status_kadaluarsa'] === 'expired') {
+                    $badgeClass = 'bg-danger';
 
-                <tr>
-                  <td>1</td>
-                  <td>100000</td>
-                  <td>11/1/25</td>
-                  <td>Clorin</td>
-                  <td>Gas</td>
-                  <td>33/1/26</td>
-                  <td>1000ml</td>
+                } elseif ($item['status_kadaluarsa'] === 'hampir kadaluarsa') {
+                    $badgeClass = 'bg-warning';
+
+                } else {
+                    $badgeClass = 'bg-success';
+                }
+?>
+
+<tr data-status="<?= trim(strtolower($item['status_kadaluarsa'])) ?>">
+ 
+                    <td><?= $no; ?></td>
+                    <td><?= $item['id_bahan'] ?></td>
+                    <td><?= $item['nama_bahan'] ?></td>
+                    <td><?= $item['tgl_penerimaan'] ?></td>
+                    <td><?= $item['tgl_kadaluarsa'] ?></td>
+                    <td><?= $item['rak'] ?></td>
+                    <td><?= $item['status'] ?></td>
+                    <td>            <span class="badge <?= $badgeClass ?>">
+                <?= $item['status_kadaluarsa'] ?>
+            </span></td>
                 </tr>
 
-                <tr>
-                  <td>2</td>
-                  <td>200000</td>
-                  <td>11/2/25</td>
-                  <td>Carbondioksida</td>
-                  <td>Gas</td>
-                  <td>33/2/26</td>
-                  <td>1000ml</td>
-                </tr>
+            <?php endforeach; ?>
 
-                <tr>
-                  <td>3</td>
-                  <td>300000</td>
-                  <td>11/3/25</td>
-                  <td>Clorin</td>
-                  <td>Gas</td>
-                  <td>33/3/26</td>
-                  <td>1000ml</td>
-                </tr>
-
-                <tr>
-                  <td>4</td>
-                  <td>400000</td>
-                  <td>11/4/25</td>
-                  <td>Klorida</td>
-                  <td>Gas</td>
-                  <td>33/4/26</td>
-                  <td>1000ml</td>
-                </tr>
 
               </tbody>
 
@@ -203,15 +250,3 @@ require LAYOUT_PATH . "navbar.php";
 
   </div>
 </main>
-
-<script>
-document.getElementById("searchInput").addEventListener("keyup", function() {
-  let value = this.value.toLowerCase();
-  let rows = document.querySelectorAll("#table-dashboard tbody tr");
-
-  rows.forEach(row => {
-    let text = row.innerText.toLowerCase();
-    row.style.display = text.includes(value) ? "" : "none";
-  });
-});
-</script>

@@ -3,6 +3,7 @@
  <?php
  $halaman = isset($_GET['action']) ? $_GET['action'] : 'dashboard';
  $current_page = basename($_SERVER['PHP_SELF']);
+ $peran = $_SESSION['user']['peran'];
  ?>
  <!-- sidebar -->
   <div class="offcanvas offcanvas-start bg-purple text-white sidebar-nav" tabindex="-1" id="offcanvasExample"
@@ -15,6 +16,8 @@
     <div class="offcanvas-body pt-3 p-0">
       <nav class="navbar-dark">
         <ul class="navbar-nav sidenav">
+
+          <?php if ($peran === 'admin'): ?>
           <li class="nav-link bordered px-3">
             <a href="index.php" class="nav-link px-3 <?= ($halaman == 'dashboard') ? 'active' : '' ?> ">
               <span class="me-2"><i class="bi bi-speedometer2"></i></span>
@@ -82,6 +85,17 @@
               <span>Permintaan Teknisi</span>
             </a>
           </li>
+
+          <?php endif; ?>
+
+          <?php if ($peran === 'teknisi'): ?>
+          <li class="nav-link bordered px-3">
+            <a href="index.php" class="nav-link px-3 <?= ($halaman == 'dashboard') ? 'active' : '' ?> ">
+              <span class="me-2"><i class="bi bi-speedometer2"></i></span>
+              <span>Dashboard</span>
+            </a>
+          </li>
+            <?php endif; ?>
         </ul>
       </nav>
     </div>

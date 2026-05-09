@@ -34,19 +34,19 @@
 
 <body class="bg-light">
 
-<?php if( isset($_SESSION['success'])):?>
-  <script>
+<?php if(isset($_SESSION['alert'])): ?>
+<script>
 Swal.fire({
-    icon: 'success',
-    title: 'Telah Disetujui!',
-    text: '<?= $_SESSION['success']; ?>',
+    icon: '<?= $_SESSION['alert']['icon']; ?>',
+    title: '<?= $_SESSION['alert']['title']; ?>',
+    text: '<?= $_SESSION['alert']['text']; ?>',
     showConfirmButton: false,
-    timer: 5000, // 2 detik
+    timer: <?= $_SESSION['alert']['timer']; ?>,
     timerProgressBar: true
-})
+});
 </script>
-<?php unset($_SESSION['success']);?>
-<?php endif;?>
+<?php unset($_SESSION['alert']); ?>
+<?php endif; ?>
 
 <section class="min-vh-100 d-flex align-items-center justify-content-center">
 

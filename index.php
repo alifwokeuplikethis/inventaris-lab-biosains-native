@@ -81,38 +81,29 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 session_start();
-require "vendor/autoload.php";
-use Models\AuthModel;
+
+define('BASE_PATH', __DIR__);
+define('PAGES_PATH', BASE_PATH . '/views/pages/');
+define('LAYOUT_PATH', BASE_PATH . '/views/components/');
+define(
+    'BASE_URL',
+    (isset($_SERVER['HTTPS']) ? 'https' : 'http')
+    . '://'
+    . $_SERVER['HTTP_HOST']
+    . rtrim(dirname($_SERVER['SCRIPT_NAME']), '/')
+);
+
+require BASE_PATH . '/vendor/autoload.php';
+
 use Dotenv\Dotenv;
+use Routes\Router;
+use Models\AuthModel;
 
-
-$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv = Dotenv::createImmutable(BASE_PATH);
 $dotenv->load();
 
-// ambil routes
-$routes = require "Routes/web.php";
+$routes = require BASE_PATH . '/Routes/web.php';
 
-$model = new AuthModel();
+$router = new Router($routes);
 
-$action = $_GET['action'] ?? 'dashboard';
-
-// 🔐 auth check
-$publicRoutes = ['login', 'callback', 'login_page', 'post_login', 'register', 'save_profile'];
-
-if (!in_array($action, $publicRoutes)) {
-    if (empty($_SESSION['is_logged_in']) || !$model->cekInfo($_SESSION['user']['id'])) {
-        header("Location: ?action=login_page");
-        exit;
-    }
-}
-
-// 🚀 eksekusi route
-if (isset($routes[$action])) {
-    require "views/components/header.php"; 
-    $routes[$action]();
-    require "views/components/footer.php"; 
-    exit;
-}
-
-echo "404 Not Found";
-?>
+$router->dispatch($_GET['action'] ?? 'dashboard');

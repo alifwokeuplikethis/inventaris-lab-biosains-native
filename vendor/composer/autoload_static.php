@@ -30,6 +30,10 @@ class ComposerStaticInit5cd48b6645860e6f71f44390d4549abe
             'Symfony\\Polyfill\\Ctype\\' => 23,
             'Services\\' => 9,
         ),
+        'R' => 
+        array (
+            'Routes\\' => 7,
+        ),
         'P' => 
         array (
             'Psr\\Log\\' => 8,
@@ -88,6 +92,10 @@ class ComposerStaticInit5cd48b6645860e6f71f44390d4549abe
         'Services\\' => 
         array (
             0 => __DIR__ . '/../..' . '/Services',
+        ),
+        'Routes\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/Routes',
         ),
         'Psr\\Log\\' => 
         array (

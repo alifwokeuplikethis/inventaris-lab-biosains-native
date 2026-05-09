@@ -177,7 +177,7 @@ Swal.fire({
 
           <!--  -->
           <div class="d-flex gap-2">
-    <div class="dropdown">
+            <div class="dropdown">
         <button class="btn btn-filter-dropdown dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown">
             <i class="bi bi-funnel me-1"></i> 
             <span id="filterStatusLabel">Semua Status</span>
@@ -272,8 +272,6 @@ Swal.fire({
                     <td>
                       <div class="d-flex gap-2">
                         <button class="btn-circle btn-detail" data-bs-toggle="modal" data-bs-target="#contohModal"><i class="bi bi-eye"></i></button>
-                        <button class="btn-circle btn-stok" onclick="window.location.href='?action=transaksi_stok&id_bahan=<?= $row['id'] ?>'"><i class="bi bi-plus"></i></button>
-                        <button class="btn-circle btn-hapus"><i class="bi bi-trash"></i></button>
                       </div>
                     </td>
                   </tr>
@@ -292,5 +290,5 @@ Swal.fire({
 
 
 <?php
-include "Modal/modalDashboard.php";
+include PAGES_PATH . "Modal/modalDashboard.php";
 ?>
