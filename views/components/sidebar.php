@@ -1,5 +1,3 @@
-
-
  <?php
  $halaman = isset($_GET['action']) ? $_GET['action'] : 'dashboard';
  $current_page = basename($_SERVER['PHP_SELF']);
