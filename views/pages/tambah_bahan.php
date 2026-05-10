@@ -126,7 +126,7 @@ require LAYOUT_PATH . "navbar.php";
                 <input type="number" 
                       step="0.01"
                       class="form-control input-custom" 
-                      placeholder="Contoh: 500 ml" 
+                      placeholder="Contoh: 500" 
                       name="volume_per_botol" 
                       required>
               </div>

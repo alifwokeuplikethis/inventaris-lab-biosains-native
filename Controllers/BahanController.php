@@ -1,96 +1,82 @@
 <?php
 namespace Controllers;
+
 use Models\BahanModel;
 use Models\Database;
-use PDO;
-class BahanController{
+use Exception;
+
+class BahanController {
+
     private BahanModel $model;
-    private PDO $conn;
-    public function __construct(){
-        $this->model = (new BahanModel());
+    private $conn;
+
+    public function __construct() {
         $this->conn = (new Database())->getConnection();
+        $this->model = new BahanModel($this->conn);
     }
 
-    public function dashboard(){
+    /* ================= DASHBOARD ================= */
+    public function dashboard() {
+        $stats = $this->model->getDashboardStats();
         $data = $this->model->getDashboardBahan();
-
         require PAGES_PATH . 'dashboard.php';
     }
-    
-    public function insert_bahan(){
-        $this->conn->beginTransaction();
+
+    /* ================= INSERT BAHAN ================= */
+    public function insert_bahan() {
+
         try {
-        // ================insert data bahan only ==============
-        $dataBahan = [
-            'nama_bahan' => $_POST['nama_bahan'] ?? null,
-            'rumus' => $_POST['rumus'] ?? null,
-            'merk' => $_POST['merk'] ?? null,
-            'satuan' => $_POST['satuan'] ?? null,
-            'jenis' => $_POST['jenis'] ?? null,
-            'volume_per_botol' => $_POST['volume_per_botol'] ?? null,
-            'foto_bahan' => null
-        ];
+            $this->conn->beginTransaction();
 
-        // ================= UPLOAD FOTO =================
-        if (!empty($_FILES['foto_bahan']['name'])) {
-            $targetDir = "./images/uploads/";
-            $fileName = time() . "_" . $_FILES['foto_bahan']['name'];
-            $targetFile = $targetDir . $fileName;
+            // 1. DATA BAHAN
+            $dataBahan = $_POST;
 
-            move_uploaded_file($_FILES['foto_bahan']['tmp_name'], $targetFile);
-            $dataBahan['foto_bahan'] = $fileName;
-        }
-        // =================================================
-        $id_bahan = $this->model->insertBahan($dataBahan);
+            // upload gambar
+            $dataBahan['foto_bahan'] = null;
+            if (!empty($_FILES['foto_bahan']['name'])) {
+                $targetDir = BASE_PATH . "/images/uploads/";
+                $fileName = time() . '_' . uniqid() . '.' . pathinfo($_FILES['foto_bahan']['name'], PATHINFO_EXTENSION);
 
+                move_uploaded_file($_FILES['foto_bahan']['tmp_name'], $targetDir . $fileName);
+                $dataBahan['foto_bahan'] = $fileName;
+            }
 
+            $id_bahan = $this->model->insertBahan($dataBahan);
 
-        // =================insert data stok (opsional)===================
+            // 2. STOK
+            $volume = $_POST['qty'] * $_POST['volume_per_botol'];
 
-        $rak = $_POST['rak'] ?? null;
-        $tgl_penerimaan = $_POST['tgl_penerimaan'] ?? null;
-        $tgl_kadaluarsa = $_POST['tgl_kadaluarsa'] ?? null;
-        $qty = $_POST['qty'] ?? null;
-        $id_pengguna = $_SESSION['user']['id_normal'];
-        $volume_per_botol = $_POST['volume_per_botol'];
-
-        $volume = ($qty !== null && $volume_per_botol !== null) ? $qty * $volume_per_botol : null;
-        $dataStok = null;
-
-        if ($volume !== null) {
-            $dataStok = [
-                'id_bahan' => $id_bahan,
-                'rak' => $rak,
-                'tgl_penerimaan' => $tgl_penerimaan,
-                'tgl_kadaluarsa' => $tgl_kadaluarsa,
+            $stokId = $this->model->insertStok([
+                'tgl_penerimaan' => $_POST['tgl_penerimaan'],
+                'tgl_kadaluarsa' => $_POST['tgl_kadaluarsa'],
                 'volume' => $volume,
-                'status' => 'gudang'
+                'status' => 'gudang',
+                'rak' => $_POST['rak']
+            ], $id_bahan);
+
+            // 3. TRANSAKSI
+            $trxId = $this->model->insertTransaksi(
+                $_SESSION['user']['id_normal'],
+                date('Y-m-d'),
+                $volume
+            );
+
+            $this->model->insertDetailTransaksi($trxId, $stokId, $volume, 'nambah');
+
+            $this->conn->commit();
+            $_SESSION['alert'] = [
+            'icon' => 'success',
+            'title' => 'SUkes!',
+            'text' => 'Data berhasil disimpan!',
+            'timer' => 5000
             ];
+            
+            header("Location: ?action=dashboard");
+            exit;
+
+        } catch (Exception $e) {
+            $this->conn->rollBack();
+            die($e->getMessage());
         }
-
-        $id_stok = $this->model->insertBahanStok($dataStok, $id_bahan);
-
-        // ========================================
-        
-        $tgl_transaksi = date('Y-m-d');
-        // ======== insert transaksi ============
-        $id_transaksi = $this->model->insertTransaksi($id_pengguna, $tgl_transaksi, $volume);
-        // =======================================
-
-        // ================= insert detail transaksi ================
-        $this->model->insertDetailTransaksi($id_transaksi, $id_stok, $volume, "nambah");
-
-
-        $_SESSION['success'] = "berhasil menambah data bahan" . $dataBahan['nama_bahan'];
-
-        header("Location: ?action=dashboard");
-        exit;
-
-    } catch (Exception $e) {
-        // response error
-        $this->conn->rollBack();
-        http_response_code(400);
-    }
     }
 }
-?>

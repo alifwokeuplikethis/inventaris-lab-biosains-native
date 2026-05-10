@@ -1,87 +1,54 @@
-$(document).ready(function(){
+// Gunakan var agar tidak ada error redeclare
+var table; 
 
-  // =======================
-  // DATATABLE (DASHBOARD)
-  // =======================
-  if ($('#table-dashboard').length) {
-    const table = $('#table-dashboard').DataTable({
-      pageLength: 8,
-      lengthChange: false,
-      info: true,
-      language: {
-        "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ bahan",
-        "infoEmpty": "Tidak ada data bahan",
-        "infoFiltered": "(disaring dari total _MAX_ bahan)",
-        "zeroRecords": "Bahan tidak ditemukan",
-        "paginate": {
-          "next": "›",
-          "previous": "‹"
+// Pastikan semua library (jQuery, Bootstrap, DT) sudah siap
+$(document).ready(function() {
+    
+    // 1. Inisialisasi DataTable dengan proteksi
+    if ($('#table-dashboard').length) {
+        // Hancurkan jika sudah ada inisialisasi sebelumnya (mencegah error double init)
+        if ($.fn.DataTable.isDataTable('#table-dashboard')) {
+            $('#table-dashboard').DataTable().destroy();
         }
-      }
+
+        table = $('#table-dashboard').DataTable({
+            pageLength: 8,
+            lengthChange: false,
+            info: true,
+            language: {
+                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                "paginate": { "next": "›", "previous": "‹" }
+            }
+        });
+    }
+
+    // 2. Gunakan Delegasi Event (Sangat Penting!)
+    // Ini supaya event 'click' tetap nempel walau elemen belum muncul sempurna
+    $(document).on('click', '.filter-status', function(e) {
+        e.preventDefault();
+        var val = $(this).attr('data-value'); 
+        var text = $(this).text().trim();
+        
+        $('#filterStatusLabel').text(text);
+        if(table) table.column(7).search(val).draw();
     });
 
-    // Search
-    $('#searchInput').on('keyup', function(){
-      table.search(this.value).draw();
+    $(document).on('click', '.filter-jenis', function(e) {
+        e.preventDefault();
+        var val = $(this).attr('data-value');
+        var text = $(this).text().trim();
+
+        $('#filterJenisLabel').text(text);
+        if(table) table.column(4).search(val).draw();
     });
 
-    // Filter Jenis
-    $('.filter-item').on('click', function(e){
-      e.preventDefault();
-      let value = $(this).data('value');
-      let text = $(this).text();
-
-      $('#filterText').text(text);
-      table.column(3).search(value).draw();
+    // 3. Search Global
+    $(document).on('keyup', '#searchInput', function() {
+        if(table) table.search(this.value).draw();
     });
-  }
-
-  // =======================
-  // TAMBAH BAHAN (UPLOAD)
-  // =======================
-  // if ($('#fileInput').length) {
-
-  //   $('#fileInput').on('change', function(event){
-  //     const file = event.target.files[0];
-
-  //     if (!file) return;
-
-  //     // 🔒 Validasi size (2MB)
-  //     if (file.size > 2 * 1024 * 1024) {
-  //       alert("Ukuran maksimal 2MB!");
-  //       $(this).val('');
-  //       return;
-  //     }
-
-  //     // 🔒 Validasi type
-  //     const allowed = ['image/jpeg', 'image/png', 'image/webp'];
-  //     if (!allowed.includes(file.type)) {
-  //       alert("Format harus JPG, PNG, WEBP!");
-  //       $(this).val('');
-  //       return;
-  //     }
-
-  //     const reader = new FileReader();
-
-  //     reader.onload = function(e){
-  //       $('#previewImage')
-  //         .attr('src', e.target.result)
-  //         .show();
-
-  //       $('#uploadIcon, #uploadText, #uploadSubText').hide();
-  //     };
-
-  //     reader.readAsDataURL(file);
-  //   });
-
-  // }
-
 });
 
-
-// =======================
-// GLOBAL FUNCTION (WAJIB GLOBAL)
-// =======================
+// Fungsi Global untuk reset upload (taruh di luar ready agar bisa dipanggil HTML)
 window.resetForm = function() {
   $('#previewImage').attr('src', '').hide();
   $('#uploadIcon, #uploadText, #uploadSubText').show();

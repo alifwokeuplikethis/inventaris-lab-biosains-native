@@ -1,31 +1,115 @@
 <?php
-define('BASE_PATH', dirname(__DIR__));
 
-define('PAGES_PATH', BASE_PATH . '/views/pages/');
-define('LAYOUT_PATH', BASE_PATH . '/views/components/');
 use Controllers\AuthController;
 use Controllers\BahanController;
+use Controllers\StokController;
+use Controllers\KadaluarsaController;
+use Controllers\AkunTeknisiController;
+use Controllers\TeknisiController;
+
 return [
 
-    // ===== AUTH =====
-    'login' => fn() => (new AuthController())->login(),
-    'callback' => fn() => (new AuthController())->callback(),
-    'logout' => fn() => (new AuthController())->logout(),
-    'register' => fn() => (new AuthController())->register(),
-    'save_profile' => fn() => (new AuthController())->save_profile(),
+    // AUTH
+    [
+        'route' => 'login_page',
+        'view' => 'Auth/login.php',
+        'public' => true
+    ],
+    [
+        'route' => 'post_login',
+        'view' => 'Auth/post_login.php',
+        'public' => true
+    ],
 
-    // ======= BAHAN =========
-    'insert/tambah_bahan' => fn() => (new BahanController())->insert_bahan(),
+    [
+        'route' => 'register',
+        'controller' => [AuthController::class, 'register'],
+        'public' => true
+    ],
+    [
+        'route' => 'login',
+        'controller' => [AuthController::class, 'login'],
+        'public' => true
+    ],
+    [
+        'route' => 'callback',
+        'controller' => [AuthController::class, 'callback'],
+        'public' => true
+    ],
+    [
+        'route' => 'save_profile',
+        'controller' => [AuthController::class, 'save_profile'],
+        'public' => true
+    ],
 
-    // ===== HALAMAN =====
-    'login_page' => fn() => require 'views/login.php',
-    'post_login' => fn() => require 'views/post_login.php',
+    [
+        'route' => 'logout',
+        'controller' => [AuthController::class, 'logout']
+    ],
 
-    'dashboard' => fn() => (new BahanController())->dashboard(),
-    'kadaluarsa' => fn() => require PAGES_PATH . 'kadaluarsa.php',
-    'tambah_bahan' => fn() => require PAGES_PATH . 'tambah_bahan.php',
-    'laporan' => fn() => require PAGES_PATH . 'laporan.php',
-    'akun_teknisi' => fn() => require PAGES_PATH . 'akun_teknisi.php',
-    'pengajuan' => fn() => require PAGES_PATH . 'pengajuan.php',
+    // BAHAN/dashboard
+    [
+        'route' => 'dashboard',
+        'controller' => [BahanController::class, 'dashboard'],
+        'role' => 'admin'
+    ],
+    [
+        'route' => 'tambah_bahan',
+        'view' => 'tambah_bahan.php'
+    ],
+
+    [
+        'route' => 'insert/tambah_bahan',
+        'controller' => [BahanController::class, 'insert_bahan']
+    ],
+
+    // STOK
+    [
+        'route' => 'prosesStok',
+        'controller' => [StokController::class, 'prosesStok']
+    ],
+    [
+        'route' => 'transaksi_stok',
+        'controller' => [StokController::class, 'transaksiStok']
+    ],
+
+    [
+        'route' => 'previewKurangiStok',
+        'controller' => [StokController::class, 'previewKurangiStok'],
+        'api' => true
+    ],
+
+    //  Kadaluarsa
+    [
+        'route' => 'kadaluarsa',
+        'controller' => [KadaluarsaController::class, 'getKadaluarsa']
+    ],
+
+    // Akun teknisi
+    [
+        'route' => 'akun_teknisi',
+        'controller' => [AkunTeknisiController::class, 'getAkunTeknisi']
+    ],
+    [
+        'route' => 'tolak',
+        'controller' => [AkunTeknisiController::class, 'tolak']
+    ],
+    [
+        'route' => 'toggle_status',
+        'controller' => [AkunTeknisiController::class, 'toggle_status']
+    ],
+    [
+        'route' => 'hapus',
+        'controller' => [AkunTeknisiController::class, 'hapus']
+    ],
+    [
+        'route' => 'setujui',
+        'controller' => [AkunTeknisiController::class, 'setujui']
+    ],
+
+    // HALAMAN TEKNISI
+    [
+        'route' => 'halaman_teknisi',
+        'controller' => [TeknisiController::class, 'dashboard']
+    ]
 ];
-?>

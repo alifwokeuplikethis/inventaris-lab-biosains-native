@@ -1,241 +1,252 @@
 <?php  
-
 require LAYOUT_PATH . "sidebar.php";
 require LAYOUT_PATH . "navbar.php";
 ?>
 
-  <style>
-    /* ================= BODY ================= */
-    body {
-      background-color: #e9ecef;
-    }
+<style>
+  body { 
+    background: #f5f7f6; 
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+  }
 
-    /* ================= WRAPPER HIJAU ================= */
-    .main-box {
-      background: linear-gradient(180deg, #2b6766, #3f8a87);
-      border-radius: 20px;
-      padding: 25px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    }
+  .text-main { color: #02343F; }
 
-    /* ================= CARD PUTIH ================= */
-    .content-card {
-      border-radius: 20px;
-      overflow: hidden;
-    }
+  /* STAT */
+  .stat-pill {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 18px 20px;
+    border-radius: 16px;
+    background: white; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
 
-    /* ================= HEADER ================= */
-    .header-area {
-      background: #ffffff;
-      padding: 20px 30px;
-      border-radius: 15px;
-    }
+  .stat-pill .ico {
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+  }
 
-    .title-text {
-      color: #A0522D;
-      font-weight: 700;
-    }
+  .pill-total .ico { background:#e3f2fd; color:#0d6efd; }
+  .pill-warning .ico { background:#fff3cd; color:#ffc107; }
+  .pill-danger .ico { background:#f8d7da; color:#dc3545; }
 
-    /* ================= SEARCH ================= */
-    .search-box input {
-      background-color: #dfe6e1;
-      border-radius: 30px;
-      padding-left: 20px;
-      padding-right: 40px;
-      border: none;
-      width: 260px;
-    }
+  /* CONTROL */
+  .control {
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+  }
 
-    .search-icon {
-      position: absolute;
-      right: 15px;
-      top: 8px;
-      color: #444;
-    }
+  /* TABLE */
+  #table-dashboard thead th {
+    background: #f8faf9;
+    border-bottom: 2px solid #eef2f0;
+    font-size: 0.85rem;
+    text-align: center;
+  }
 
-    /* ================= TEXT TENGAH ================= */
-    .table th,
-    .table td {
-      text-align: center;
-      vertical-align: middle; /* biar rata tengah juga secara vertikal */
-    }
-    
-    /* ================= TABLE AREA ================= */
-    .table-wrapper {
-      background: #ffffff;
-      border-radius: 15px;
-      padding: 15px;
-      margin-top: 20px;
-    }
+  #table-dashboard td {
+    text-align: center;
+    vertical-align: middle;
+  }
 
-    .table thead tr {
-      background-color: #cfd8cf;
-      border-radius: 10px;
-    }
+  tbody tr:hover {
+    background-color: #f1f5f4;
+  }
 
-    .table thead th {
-      border: none;
-      font-weight: 600;
-      padding: 15px;
-    }
+  div.dataTables_filter {
+    display: none !important;
+  }
 
-    .table tbody tr {
-      background: #f2f4f3;
-      border-radius: 10px;
-    }
+</style>
 
-    .table tbody td {
-      border: none;
-      padding: 15px;
-    }
+<main class="py-4">
+  <div class="container-fluid px-4">
 
-    /* JARAK ANTAR ROW BIAR KAYAK CARD */
-    .table {
-      border-collapse: separate;
-      border-spacing: 0 10px;
-    }
+    <!-- WRAPPER -->
+    <section class="p-4 shadow-sm" style="background:#2b6766; border-radius:20px;">
+      
+      <!-- ===== STAT (INI YANG KAMU MAU) ===== -->
+      <div class="row g-4 mb-4">
 
-    /* ================= ICON BOX ================= */
-    .icon-box {
-      width: 40px;
-      height: 40px;
-      background: #e9ecef;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* ================= HOVER ================= */
-    tbody tr:hover {
-      background-color: #e6ebe9;
-      transition: 0.2s;
-    }
-
-  </style>
-
-<body>
-
-<!-- ================= MAIN ================= -->
-<main class="mt-5 pt-3">
-  <div class="container-fluid">
-
-    <!-- HIJAU BESAR -->
-    <section class="main-box">
-
-      <div class="content-card">
-
-        <!-- HEADER -->
-        <div class="header-area d-flex justify-content-between align-items-center">
-
-          <!-- JUDUL -->
-          <h2 class="mb-0 title-text">Kadaluarsa</h2>
-
-          <!-- SEARCH + ICON -->
-          <div class="d-flex align-items-center gap-4">
-
-            <!-- SEARCH -->
-            <div class="position-relative search-box">
-              <input type="text" id="searchInput" placeholder="Telusuri...">
-              <i class="fa fa-search search-icon"></i>
+        <div class="col-md-4">
+          <div class="stat-pill pill-total">
+            <div class="ico"><i class="bi bi-box"></i></div>
+            <div>
+              <small>Total Data</small>
+              <div>
+                <strong>4</strong>
+              </div>
             </div>
-
-            <!-- ICON -->
-            <div class="text-secondary fs-4 d-flex align-items-center">
-              <i class="fa fa-angle-double-right opacity-50"></i>
-              <i class="fa fa-home ms-2"></i>
-            </div>
-
           </div>
         </div>
 
-        <!-- TABLE -->
-        <div class="table-wrapper">
+        <div class="col-md-4">
+          <div class="stat-pill pill-warning">
+            <div class="ico"><i class="bi bi-exclamation-triangle"></i></div>
+            <div>
+              <small>Akan Kadaluarsa</small>
+              <div>
+                <strong><?= $totalHampir ?></strong>
+              </div>
+            </div>
+          </div>
+        </div>
 
-          <div class="table-responsive" style="max-height: 420px; overflow-y: auto;">
-            <table class="table align-middle" id="dataTable">
+        <div class="col-md-4">
+          <div class="stat-pill pill-danger">
+            <div class="ico"><i class="bi bi-x-circle"></i></div>
+            <div>
+              <small>Sudah Kadaluarsa</small>
+              <div>
+                <strong><?= $totalExpired ?></strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ===== CARD ===== -->
+      <div class="card border-0 shadow-lg" style="border-radius:18px; overflow:hidden;">
+
+       <!-- HEADER -->
+<div class="card-header bg-white p-3">
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+        <h5 class="fw-bold text-main m-0">
+            <i class="bi bi-clock-history me-2"></i>
+            Data Kadaluarsa
+        </h5>
+
+        <div class="d-flex align-items-center gap-2">
+
+            <!-- FILTER -->
+            <div class="dropdown">
+
+                <button 
+                    class="btn btn-outline-secondary shadow-sm dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                >
+                    <i class="bi bi-funnel me-1"></i>
+                    <span id="filterText">Semua Status</span>
+                </button>
+
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+
+                    <li>
+                        <a class="dropdown-item filter-item" href="#" data-value="" data-column="7">
+                            Semua
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item filter-item" href="#" data-value="expired" data-column="7">
+                            Expired
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item filter-item" href="#" data-value="hampir kadaluarsa" data-column="7"> 
+                            Hampir Kadaluarsa
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item filter-item" href="#" data-value="aman" data-column="7"> 
+                            Aman
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <!-- SEARCH -->
+            <input 
+                type="text"
+                id="searchInput"
+                class="form-control control shadow-sm"
+                placeholder="Cari data..."
+                style="width:220px;"
+            >
+
+        </div>
+
+    </div>
+
+</div>
+
+        <!-- TABLE -->
+        <div class="card-body p-4 bg-white">
+          <div class="table-responsive">
+
+            <table id="table-dashboard" class="table table-hover align-middle">
 
               <thead>
                 <tr>
                   <th>No</th>
-                  <th>id barang</th>
-                  <th>Tanggal Masuk</th>
-                  <th>Nama Bahan Kimia</th>
-                  <th>Kategori</th>
-                  <th>Tanggal Kadaluarsa</th>
-                  <th>Jumlah</th>
+                  <th>ID Bahan</th>
+                  <th>Nama Bahan</th>
+                  <th>Tanggal Penerimaan</th>
+                  <th>Kadaluarsa</th>
+                  <th>Rak</th>
+                  <th>Status</th>
+                  <th>Status Kadaluarsa</th>
                 </tr>
               </thead>
 
               <tbody>
+                <?php $no = 0;?>
+            <?php foreach ($dataKadaluarsa as $item): ?>
+              <?php
+                $no++;
+                
+                if ($item['status_kadaluarsa'] === 'expired') {
+                    $badgeClass = 'bg-danger';
 
-                <!-- ROW -->
-                <tr>
-                  <td>1.</td>
-                  <td>100000</td>
-                  <td>11/1/25</td>
-                  <td>Clorin</td>
-                  <td>gas</td>
-                  <td>33/1/26</td>
-                  <td>1000ml</td>
+                } elseif ($item['status_kadaluarsa'] === 'hampir kadaluarsa') {
+                    $badgeClass = 'bg-warning';
+
+                } else {
+                    $badgeClass = 'bg-success';
+                }
+?>
+
+<tr data-status="<?= trim(strtolower($item['status_kadaluarsa'])) ?>">
+ 
+                    <td><?= $no; ?></td>
+                    <td><?= $item['id_bahan'] ?></td>
+                    <td><?= $item['nama_bahan'] ?></td>
+                    <td><?= $item['tgl_penerimaan'] ?></td>
+                    <td><?= $item['tgl_kadaluarsa'] ?></td>
+                    <td><?= $item['rak'] ?></td>
+                    <td><?= $item['status'] ?></td>
+                    <td>            <span class="badge <?= $badgeClass ?>">
+                <?= $item['status_kadaluarsa'] ?>
+            </span></td>
                 </tr>
 
-                <tr>
-                  <td>2.</td>
-                  <td>200000</td>
-                  <td>11/2/25</td>
-                  <td>Carbondioksida</td>
-                  <td>gas</td>
-                  <td>33/2/26</td>
-                  <td>1000ml</td>
-                </tr>
+            <?php endforeach; ?>
 
-                <tr>
-                  <td>3.</td>
-                  <td>300000.</td>
-                  <td>11/3/25</td>
-                  <td>Clorin</td>
-                  <td>gas</td>
-                  <td>33/3/26</td>
-                  <td>1000ml</td>
-                </tr>
-
-                <tr>
-                  <td>4.</td>
-                  <td>400000.</td>
-                  <td>11/4/25</td>
-                  <td>klorida</td>
-                  <td>gas</td>
-                  <td>33/4/26</td>
-                  <td>1000ml</td>
-                </tr>
 
               </tbody>
 
             </table>
-          </div>
 
+          </div>
         </div>
 
       </div>
+
     </section>
 
   </div>
 </main>
-
-<!-- JS -->
-<script src="js/jquery-3.5.1.js"></script>
-<script src="js/bootstrap.bundle.min.js"></script>
-
-<script>
-/* ================= SEARCH ================= */
-document.getElementById("searchInput").addEventListener("keyup", function() {
-  let value = this.value.toLowerCase();
-  let rows = document.querySelectorAll("#dataTable tbody tr");
-
-  rows.forEach(row => {
-    let text = row.innerText.toLowerCase();
-    row.style.display = text.includes(value) ? "" : "none";
-  });
-});
-</script>

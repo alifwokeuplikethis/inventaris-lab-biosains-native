@@ -18,7 +18,7 @@ class AuthController {
         );
 
         $this->authManager = new AuthManager($googleProvider);
-        $this->model = (new AuthModel());
+        $this->model = new AuthModel();
     }
 
     public function login() {
@@ -41,69 +41,129 @@ class AuthController {
         $infoTech = $this->model->cekInfo($result['profile']['id']);
         
         if($data){
-            if($data['status'] == 'disetujui'){
+            // CEK STATUS PENDAFTARAN DULU
+            if($data['status_pendaftaran'] == 'disetujui'){
+                if($data['is_aktif'] == 0) {
+                    $_SESSION['alert'] = [ // atau 'error' tergantung setup sweetalert Anda
+                        'icon' => 'error',
+                        'title' => 'Akun Nonaktif!',
+                        'text' => 'Mohon maaf, akun Anda sedang dinonaktifkan oleh admin. Hubungi admin untuk info lebih lanjut.',
+                        'timer' => 5000
+                    ];
+                    return header("Location: ?action=login_page");
+                    exit;
+                }
+                // Jika sudah melengkapi info profil
                 if($infoTech){
+
+                    // Jika aktif dan disetujui -> BISA LOGIN
                     $_SESSION['is_logged_in'] = true;
                     $_SESSION['user'] = $result['profile'];
                     $_SESSION['user']['id_normal'] = $data['id'];
-                    $_SESSION['success'] = 'Selamat datang sir .' . $_SESSION['user']['nama'];
+                    $_SESSION['user']['peran'] = $data['peran'];
+                    $_SESSION['alert'] = [
+                        'icon' => 'success',
+                        'title' => 'Login Berhasil',
+                        'text' => 'Selamat datang sir ' . $_SESSION['user']['nama'],
+                        'timer' => 3000
+                    ];
                     return header("Location: ?pages=dashboard");
                     exit;
-                }else{
+
+                } else {
+                    // Jika disetujui TAPI belum isi biodata
                     $_SESSION['is_logged_in'] = true;
                     $_SESSION['user'] = $result['profile'];
                     $_SESSION['user']['id_normal'] = $data['id'];
-                    $_SESSION['success'] = 'Selamat, anda telah disetujui admin, tolong isi data diri anda';
+                    $_SESSION['user']['peran'] = "teknisi";
+                    $_SESSION['alert'] = [
+                    'icon' => 'success',
+                    'title' => 'Selamat, akun anda disetujui!',
+                    'text' => 'Tolong masukkan biodata anda',
+                    'timer' => 5000
+                    ];
                     return header("Location: ?action=post_login");
                     exit;
                 }
-            }elseif($data['status'] == 'pending'){
-                echo "<script>
-                alert('Mohon maaf, akun belum disetujui oleh admin!');
-                window.location.href='?action=login_page'</script>";
+
+            } elseif($data['status_pendaftaran'] == 'pending'){
+                $_SESSION['alert'] = [
+                    'icon' => 'warning',
+                    'title' => 'Akun anda masih belum disetujui admin!',
+                    'text' => 'Yang sabar ya',
+                    'timer' => 5000
+                    ];
+                return header("Location: ?action=login_page");
                 exit;
-            }else{
-                echo "<script>
-                alert('Mohon maaf, akun ditolak oleh admin:)');
-                window.location.href='?action=login_page'</script>";
+
+            } else { // Jika Ditolak
+                $_SESSION['error'] = [
+                    'icon' => 'warning',
+                    'title' => 'WADUH!',
+                    'text' => 'akunnya ditolak XD',
+                    'timer' => 5000
+                    ];
+                return header("Location: ?action=login_page");
                 exit;
             }
-        } else{
-            echo "<script>
-            alert('Mohon maaf, ajukan registrasi email anda terlebih dahulu');
-            window.location.href='?action=login_page'</script>";
+
+        } else {
+            $_SESSION['alert'] = [
+                    'icon' => 'question',
+                    'title' => 'Register terlebih dulu!',
+                    'text' => 'register dulu ya',
+                    'timer' => 5000
+                    ];
+                return header("Location: ?action=login_page");
             exit;
         }
-        
-        // return header("Location: /");
-        // exit;
     }
 
-    public function register(){
-    $email = $_POST['email'] ?? null;
 
-    if (!$email) {
-        $_SESSION['error'] = "Email kosong";
+
+    public function register(){
+        $email = $_POST['email'] ?? null;
+
+        if (!$email) {
+            $_SESSION['alert'] = [
+                    'icon' => 'question',
+                    'title' => 'kosonh!',
+                    'text' => 'isi email dulu ya',
+                    'timer' => 5000
+                    ];
+            header('Location: /inventory-revisi/?action=login_page');
+            exit;
+        }
+
+        try {
+            if ($this->model->cekEmail($email)) {
+                $_SESSION['alert'] = [
+                    'icon' => 'success',
+                    'title' => 'udah we',
+                    'text' => 'email udah terisi, selalu lihat status dengan login ya',
+                    'timer' => 5000
+                ];
+            } else {
+                $this->model->insertEmail($email);
+                $_SESSION['alert'] = [
+                    'icon' => 'success',
+                    'title' => 'BERHASL!',
+                    'text' => 'email sudah didaftarkan!',
+                    'timer' => 5000
+                ];
+            }
+        } catch (Exception $e) {
+                $_SESSION['alert'] = [
+                    'icon' => 'question',
+                    'title' => 'kosonh!',
+                    'text' => $e->getMessage(),
+                    'timer' => 5000
+                ];
+        }
+
         header('Location: /inventory-revisi/?action=login_page');
         exit;
     }
-
-    try {
-        if ($this->model->cekEmail($email)) {
-            $_SESSION['success'] = 'Email sudah terdaftar, selalu cek dengan mencoba login :D';
-        } else {
-            $this->model->insertEmail($email);
-            $_SESSION['success'] = 'Email berhasil diajukan';
-        }
-
-    } catch (Exception $e) {
-        $_SESSION['error'] = "Terjadi error sistem";
-    }
-
-    header('Location: /inventory-revisi/?action=login_page');
-    exit;
-}
-
 
     public function save_profile(){
         try{
@@ -115,13 +175,13 @@ class AuthController {
             $no_telp = $_POST['no_telp'] ?? null;
             $email = $_SESSION['user']['email'] ?? null;
 
-            $peran = "teknisi";
-            $query = $this->model->insertProfile($nama, $no_telp, $foto_pengguna, $gender, $alamat, $google_id, $peran, $email);
-            $_SESSION['success'] = 'Selamat datang sir ' . $nama;   
+            $peran = $_SESSION['user']['peran'];
+            // Memanggil model baru yang sudah menggunakan 1 tabel
+            $this->model->insertProfile($nama, $no_telp, $foto_pengguna, $gender, $alamat, $google_id, $peran, $email);
             header("Location: ?pages=dashboard");
             exit;
-        }catch(Exception $e){
-            echo "ada kesalahan: " . $e->getMessage();
+        } catch(Exception $e){
+            echo "Ada kesalahan: " . $e->getMessage();
         }
     }
 
