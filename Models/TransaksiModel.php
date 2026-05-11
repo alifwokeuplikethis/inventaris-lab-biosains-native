@@ -19,7 +19,11 @@ class TransaksiModel{
             VALUES (?, ?, ?)
         ");
 
-        $stmt->execute([$userId, $tgl, $volume]);
+        // 🔥 CEK KALAU QUERY GAGAL
+        if (!$stmt->execute([$userId, $tgl, $volume])) {
+            $error = $stmt->errorInfo();
+            throw new Exception("GAGAL INSERT TRANSAKSI: " . $error[2]);
+        }
 
         return $this->conn->lastInsertId();
     }
@@ -31,7 +35,11 @@ class TransaksiModel{
             VALUES (?, ?, ?, ?)
         ");
 
-        $stmt->execute([$trxId, $stokId, $volume, $status]);
+        // 🔥 CEK KALAU QUERY GAGAL
+        if (!$stmt->execute([$trxId, $stokId, $volume, $status])) {
+            $error = $stmt->errorInfo();
+            throw new Exception("GAGAL INSERT DETAIL TRANSAKSI: " . $error[2]);
+        }
     }
 
     public function getLaporanFlat($filters = []) {

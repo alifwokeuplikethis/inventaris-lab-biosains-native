@@ -63,42 +63,28 @@ $getRak    = $_GET['rak'] ?? '';
           <h5 class="fw-bold text-main m-0">
             <i class="bi bi-box-seam me-2"></i>Rekap Mutasi Bahan Kimia
           </h5>
-          <input type="text" class="form-control" placeholder="Cari..." style="width:220px;">
+          <input type="text" id="searchInput" class="form-control" placeholder="Cari..." style="width:220px;">
         </div>
 
         <div class="p-3 border-bottom">
-          <form method="GET" action="index.php" class="d-flex flex-wrap gap-3 align-items-center">
-            
-            <input type="hidden" name="action" value="laporan_transaksi">
+  <form method="GET" action="index.php" class="d-flex flex-wrap gap-3 align-items-center">
+    
+    <input type="hidden" name="action" value="laporan">
 
-            <input type="date" name="start" value="<?= $getStart ?>" title="Tanggal Mulai">
-            <span style="font-size:11px;color:var(--text-muted);">s/d</span>
-            <input type="date" name="end" value="<?= $getEnd ?>" title="Tanggal Akhir">
+    <input type="date" name="start" value="<?= $getStart ?>" title="Tanggal Mulai" class="form-control" style="width:auto;">
+    <span style="font-size:11px;color:var(--text-muted);">s/d</span>
+    <input type="date" name="end" value="<?= $getEnd ?>" title="Tanggal Akhir" class="form-control" style="width:auto;">
 
-            <select name="jenis" class="form-select" style="width:auto;">
-              <option value="">Semua Jenis</option>
-              <option value="Padat" <?= ($getJenis == 'Padat') ? 'selected' : '' ?>>Padat</option>
-              <option value="Cair" <?= ($getJenis == 'Cair') ? 'selected' : '' ?>>Cair</option>
-              <option value="Gas" <?= ($getJenis == 'Gas') ? 'selected' : '' ?>>Gas</option>
-            </select>
+    <select name="status" class="form-select" style="width:auto;">
+      <option value="">Semua Transaksi</option>
+      <option value="masuk" <?= ($getStatus == 'masuk') ? 'selected' : '' ?>>Barang Masuk</option>
+      <option value="keluar" <?= ($getStatus == 'keluar') ? 'selected' : '' ?>>Barang Keluar</option>
+    </select>
 
-            <select name="status" class="form-select" style="width:auto;">
-              <option value="">Semua Transaksi</option>
-              <option value="masuk" <?= ($getStatus == 'masuk') ? 'selected' : '' ?>>Barang Masuk</option>
-              <option value="keluar" <?= ($getStatus == 'keluar') ? 'selected' : '' ?>>Barang Keluar</option>
-            </select>
-
-            <select name="rak" class="form-select" style="width:auto;">
-              <option value="">Semua Rak</option>
-              <option value="A1" <?= ($getRak == 'A1') ? 'selected' : '' ?>>Rak A1</option>
-              <option value="B2" <?= ($getRak == 'B2') ? 'selected' : '' ?>>Rak B2</option>
-              <option value="C3" <?= ($getRak == 'C3') ? 'selected' : '' ?>>Rak C3</option>
-            </select>
-
-            <button type="submit" class="btn btn-primary" style="background:#2b6766; border:none;">Filter</button>
-            <a href="?action=laporan_transaksi" class="btn btn-light border">Reset</a>
-          </form>
-        </div>
+    <button type="submit" class="btn btn-primary" style="background:#2b6766; border:none;">Filter</button>
+    <a href="?action=laporan" class="btn btn-light border">Reset</a>
+  </form>
+</div>
 
         <div class="card-body p-4 bg-white">
           <div class="table-responsive">

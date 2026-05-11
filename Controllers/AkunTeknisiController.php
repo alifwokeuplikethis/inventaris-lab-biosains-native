@@ -53,14 +53,35 @@ class AkunTeknisiController{
     }
 
     // Aksi hapus akun permanen
-    public function hapus() {
-        $id = $_GET['id'] ?? null;
-        if ($id) {
+public function hapus() {
+    $id = $_GET['id'] ?? null;
+    if ($id) {
+        try {
+            // Mencoba menghapus akun
             $this->service->hapusAkun($id);
             $_SESSION['success'] = "Akun berhasil dihapus.";
+        } catch (\PDOException $e) {
+            // Kalau database menolak karena error 1451 (Foreign Key)
+            if (strpos($e->getMessage(), '1451') !== false) {
+                // Pastikan kamu punya penangkap $_SESSION['error'] di View kamu ya
+                $_SESSION['alert'] = [
+                'icon' => 'error',
+                'title' => 'error!',
+                'text' => 'teknisi punya transaksi, sebaiknya nonaktifkan saja!',
+                'timer' => 5000
+                ];
+            } else {
+            $_SESSION['alert'] = [
+            'icon' => 'error',
+            'title' => 'error!',
+            'text' => $e->getMessage(),
+            'timer' => 5000
+            ];
+            }
         }
-        header("Location: ?action=akun_teknisi");
-        exit;
     }
+    header("Location: ?action=akun_teknisi");
+    exit;
+}
 }
 ?>

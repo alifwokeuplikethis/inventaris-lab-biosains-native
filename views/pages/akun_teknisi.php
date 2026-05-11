@@ -15,16 +15,21 @@ require LAYOUT_PATH . "navbar.php";
         }
     </style>
 </head>
+ <?php if(isset($_SESSION['alert'])): ?>
+<script>
+Swal.fire({
+    icon: '<?= $_SESSION['alert']['icon']; ?>',
+    title: '<?= $_SESSION['alert']['title']; ?>',
+    text: '<?= $_SESSION['alert']['text']; ?>',
+    showConfirmButton: false,
+    timer: <?= $_SESSION['alert']['timer']; ?>,
+    timerProgressBar: true
+});
+</script>
+<?php unset($_SESSION['alert']); ?>
+<?php endif; ?>
 <main class="py-4">
     <div class="container-fluid px-4">
-
-        <?php if(isset($_SESSION['success'])): ?>
-            <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
-                <?= htmlspecialchars($_SESSION['success']) ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            <?php unset($_SESSION['success']); ?>
-        <?php endif; ?>
 
         <section class="p-4 shadow-sm" style="background:#2b6766; border-radius:20px;">
 

@@ -7,7 +7,7 @@ use PDO;
 class TransaksiController {
 
     private PDO $conn;
-    private TransaksiModel $laporanService;
+    private TransaksiModel $laporanModel;
 
     public function __construct() {
         // Controller nggak nyentuh database sama sekali! Clean abis!
@@ -15,16 +15,16 @@ class TransaksiController {
         $this->laporanModel = new TransaksiModel($this->conn);
     }
 public function index() {
-        // Ambil semua parameter filter dari URL
+        // 🔥 UPDATE DI SINI: Samakan default datenya dengan yang ada di View
         $filters = [
-            'start'  => $_GET['start'] ?? '',
-            'end'    => $_GET['end'] ?? '',
+            'start'  => $_GET['start'] ?? date('Y-m-01'), // Default awal bulan
+            'end'    => $_GET['end'] ?? date('Y-m-t'),    // Default akhir bulan
             'jenis'  => $_GET['jenis'] ?? '',
             'status' => $_GET['status'] ?? '',
             'rak'    => $_GET['rak'] ?? ''
         ];
 
-        // Ambil data flat
+        // Ambil data berdasarkan filter
         $dataLaporan = $this->laporanModel->getLaporanFlat($filters);
 
         require PAGES_PATH . 'laporan.php';
