@@ -6,6 +6,7 @@ use Controllers\StokController;
 use Controllers\KadaluarsaController;
 use Controllers\AkunTeknisiController;
 use Controllers\TeknisiController;
+use Controllers\TransaksiController;
 
 return [
 
@@ -107,9 +108,38 @@ return [
         'controller' => [AkunTeknisiController::class, 'setujui']
     ],
 
+    // Permintaan Teknisi admin
+    [
+        'route' => 'permintaan_teknisi',
+        'controller' => [TeknisiController::class, 'dashboardAdmin']
+    ],
+    [
+        'route' => 'prosesRequestBatch',
+        'controller' => [TeknisiController::class, 'prosesRequestBatch']
+    ],
+    [
+        'route' => 'detailRequestModal',
+        'controller' => [TeknisiController::class, 'detailRequestModal'],
+        'api' => true
+    ],
+
     // HALAMAN TEKNISI
     [
         'route' => 'halaman_teknisi',
         'controller' => [TeknisiController::class, 'dashboard']
+    ],
+    [
+        'route' => 'pengajuan_bahan',
+        'controller' => [TeknisiController::class, 'pengajuanBahan']
+    ],
+    [
+        'route' => 'ajukanBahan',
+        'controller' => [TeknisiController::class, 'ajukanBahan']
+    ],
+
+    // LaAPORANNN
+    [
+        'route' => 'laporan',
+        'controller' => [TransaksiController::class, 'index']
     ]
 ];
