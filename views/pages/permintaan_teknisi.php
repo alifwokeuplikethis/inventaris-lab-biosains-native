@@ -158,37 +158,77 @@ require LAYOUT_PATH . "navbar.php";
                 <tr>
                   <th width="50">No</th>
                   <th>Nama Teknisi</th>
-                  <th>Satuan</th>
-                  <th>Jenis</th>
-                  <th>Qty</th>
-                  <th>Foto</th>
-                  <th>Status</th>
-                  <th width="120">Aksi</th>
+                  <th width="150">Jumlah Item</th>
+                  <th>Daftar Bahan</th>
+                  <th width="150">Status</th>
+                  <th width="150">Aksi</th>
                 </tr>
               </thead>
               <tbody>
-                <script>
-                  for(let i=4; i<=12; i++){
-                    let jenis = i % 2 === 0 ? "Padat" : "Cair";
-                    document.write(`
+                  <?php $no = 1; foreach ($allRequests as $req): ?>
+                    
+                    <?php 
+                    // === LOGIKA WARNA BADGE STATUS ===
+                    $statusClass = '';
+                    if ($req['status'] === 'pending') {
+                        $statusClass = 'bg-warning bg-opacity-10 text-warning border border-warning';
+                    } elseif ($req['status'] === 'disetujui') {
+                        $statusClass = 'bg-success bg-opacity-10 text-success border border-success';
+                    } else {
+                        $statusClass = 'bg-danger bg-opacity-10 text-danger border border-danger';
+                    }
+                    ?>
+
                     <tr>
-                      <td>${i}</td>
-                      <td class="fw-bold text-dark">Teknisi ${i}</td>
-                      <td>mL</td>
-                      <td><span class="badge rounded-pill bg-light text-dark border">${jenis}</span></td>
-                      <td class="text-main fw-bold">${i*15}</td>
-                      <td><i class="bi bi-image text-muted"></i></td>
-                      <td><span class="badge bg-success bg-opacity-10 text-success px-3">Tersedia</span></td>
+                      <td><?= $no++; ?></td>
+                      
+                      <td class="fw-bold text-dark"><?= htmlspecialchars($req['nama']); ?></td>
+                      
+                      <td><span class="badge bg-secondary px-3 py-2 rounded-pill"><?= $req['jumlah_item']; ?> Item</span></td>
+                      
+                      <td class="text-muted" style="max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        <?= htmlspecialchars($req['daftar_bahan']); ?>
+                      </td>
+                      
                       <td>
-                        <div class="d-flex gap-2">
-                          <button class="btn-circle btn-detail" data-bs-toggle="modal" data-bs-target="#contohModal"><i class="bi bi-eye"></i></button>
-                          <button class="btn-circle btn-stok"><i class="bi bi-plus"></i></button>
-                          <button class="btn-circle btn-hapus"><i class="bi bi-trash"></i></button>
+                        <span class="badge px-3 py-2 rounded-pill <?= $statusClass; ?>">
+                          <?= ucfirst($req['status']); ?>
+                        </span>
+                      </td>
+                      
+                      <td>
+                        <div class="d-flex gap-2 align-items-center">
+                          <button type="button" class="btn-circle btn-detail view-detail-btn" 
+        data-id="<?= $req['id_pengguna']; ?>" 
+        data-nama="<?= htmlspecialchars($req['nama']); ?>" 
+        title="Lihat Rincian">
+  <i class="bi bi-eye"></i>
+</button>
+
+                          <?php if ($req['status'] === 'pending'): ?>
+                            
+                            <a href="?action=prosesRequestBatch&id_pengguna=<?= $req['id_pengguna']; ?>&status=setuju" 
+                               class="btn-circle btn-stok" title="Setujui Semua"
+                               onclick="return confirm('Setujui <?= $req['jumlah_item']; ?> bahan dari <?= htmlspecialchars($req['nama']); ?>? Stok akan otomatis terpotong (FEFO).')">
+                               <i class="bi bi-check-circle"></i>
+                            </a>
+                            
+                            <a href="?action=prosesRequestBatch&id_pengguna=<?= $req['id_pengguna']; ?>&status=tolak" 
+                               class="btn-circle btn-hapus" title="Tolak Semua"
+                               onclick="return confirm('Yakin ingin menolak seluruh permintaan dari <?= htmlspecialchars($req['nama']); ?>?')">
+                               <i class="bi bi-x-circle"></i>
+                            </a>
+
+                          <?php else: ?>
+                            <span class="text-muted fw-bold" style="font-size: 0.8rem;">
+                              <i class="bi bi-check2-all text-success fs-5"></i> Selesai
+                            </span>
+                          <?php endif; ?>
                         </div>
                       </td>
-                    </tr>`);
-                  }
-                </script>
+                    </tr>
+
+                  <?php endforeach; ?>
               </tbody>
             </table>
           </div>
@@ -200,31 +240,89 @@ require LAYOUT_PATH . "navbar.php";
   </div>
 </main>
 
-
+<?php require PAGES_PATH . 'Modal/modalRequest.php'; ?>
 <script>
 $(document).ready(function(){
-  // Inisialisasi DataTable dengan Pagination aktif
+  // 1. Inisialisasi DataTable
   const table = $('#table-dashboard').DataTable({
-    pageLength: 8, // Tampilkan 5 baris per halaman biar rapi
-    lengthChange: false, // Hilangkan pilihan "Show X entries"
-    info: true, // Munculkan teks "Menampilkan 1 sampai 5..."
+    pageLength: 8, 
+    lengthChange: false, 
+    info: true, 
     language: {
       "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ bahan",
       "infoEmpty": "Tidak ada data bahan",
       "infoFiltered": "(disaring dari total _MAX_ bahan)",
       "zeroRecords": "Bahan tidak ditemukan",
+      // 👇 TAMBAHKAN BARIS INI UNTUK MENGHINDARI ERROR DATATABLES 👇
+      "emptyTable": "Belum ada pengajuan bahan dari teknisi.", 
       "paginate": {
-        "next": "›", // Icon next simple
-        "previous": "‹" // Icon prev simple
+        "next": "›", 
+        "previous": "‹" 
       }
     }
   });
 
-  // Fungsi Custom Search
+  // 2. Fungsi Custom Search
   $('#searchInput').on('keyup', function(){
     table.search(this.value).draw();
   });
 
-  
+  // 3. Script AJAX Modal
+  $('.view-detail-btn').on('click', function() {
+      // Ambil data dari tombol yang diklik
+      const idPengguna = $(this).data('id');
+      const namaTeknisi = $(this).data('nama');
+      
+      $('#modalNamaTeknisi').text(namaTeknisi);
+      $('#modalDetailRequest').modal('show');
+      $('#modalDetailBody').html('<tr><td colspan="6" class="text-center py-5"><div class="spinner-border text-secondary" role="status"></div><div class="mt-2 text-muted">Memuat data...</div></td></tr>');
+      
+      // Jalankan AJAX
+      $.ajax({
+          url: '?action=detailRequestModal&id_pengguna=' + idPengguna,
+          type: 'GET',
+          dataType: 'json', 
+          success: function(response) {
+              if(response.status === 'success') {
+                  let html = '';
+                  let data = response.data;
+
+                  if(data.length === 0) {
+                      html = '<tr><td colspan="6" class="text-center py-4">Tidak ada data.</td></tr>';
+                  } else {
+                      let no = 1;
+                      data.forEach(function(item) {
+                          let statusClass = (item.status === 'pending') ? 'bg-warning bg-opacity-10 text-warning border-warning' : ((item.status === 'disetujui') ? 'bg-success bg-opacity-10 text-success border-success' : 'bg-danger bg-opacity-10 text-danger border-danger');
+                          let jenisClass = (item.jenis === 'Padat') ? 'bg-light text-dark border' : 'bg-info bg-opacity-10 text-info border-info';
+                          
+                          let foto = item.foto_bahan 
+                              ? `<img src="<?= BASE_URL ?>/images/uploads/${item.foto_bahan}" width="45" height="45" class="rounded object-fit-cover shadow-sm">` 
+                              : `<div class="bg-light rounded d-flex align-items-center justify-content-center text-muted" style="width:45px; height:45px;"><i class="bi bi-image"></i></div>`;
+
+                          let statusTeks = item.status.charAt(0).toUpperCase() + item.status.slice(1);
+
+                          html += `
+                              <tr>
+                                  <td class="ps-4">${no++}</td>
+                                  <td>${foto}</td>
+                                  <td class="fw-bold text-dark">${item.nama_bahan}</td>
+                                  <td><span class="badge rounded-pill ${jenisClass}">${item.jenis}</span></td>
+                                  <td class="text-main fw-bold">${item.total_volume} <small class="text-muted fw-normal">${item.satuan}</small></td>
+                                  <td><span class="badge px-3 py-2 rounded-pill border ${statusClass}">${statusTeks}</span></td>
+                              </tr>
+                          `;
+                      });
+                  }
+                  $('#modalDetailBody').html(html);
+              } else {
+                  $('#modalDetailBody').html(`<tr><td colspan="6" class="text-center text-danger py-4">${response.message}</td></tr>`);
+              }
+          },
+          error: function(xhr) {
+              $('#modalDetailBody').html('<tr><td colspan="6" class="text-center text-danger py-4"><i class="bi bi-exclamation-triangle-fill fs-3 d-block mb-2"></i> Gagal memuat data dari server. Pastikan routing valid dan Controller bersih dari HTML.</td></tr>');
+          }
+      });
+  });
+
 });
 </script>

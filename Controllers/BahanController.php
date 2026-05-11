@@ -2,23 +2,26 @@
 namespace Controllers;
 
 use Models\BahanModel;
+use Models\TransaksiModel;
 use Models\Database;
 use Exception;
 
 class BahanController {
 
-    private BahanModel $model;
+    private BahanModel $BahanModel;
+    private TransaksiModel $TransaksiModel;
     private $conn;
 
     public function __construct() {
         $this->conn = (new Database())->getConnection();
-        $this->model = new BahanModel($this->conn);
+        $this->BahanModel = new BahanModel($this->conn);
+        $this->TransaksiModel = new TransaksiModel($this->conn);
     }
 
     /* ================= DASHBOARD ================= */
     public function dashboard() {
-        $stats = $this->model->getDashboardStats();
-        $data = $this->model->getDashboardBahan();
+        $stats = $this->BahanModel->getDashboardStats();
+        $data = $this->BahanModel->getDashboardBahan();
         require PAGES_PATH . 'dashboard.php';
     }
 
@@ -41,12 +44,12 @@ class BahanController {
                 $dataBahan['foto_bahan'] = $fileName;
             }
 
-            $id_bahan = $this->model->insertBahan($dataBahan);
+            $id_bahan = $this->BahanModel->insertBahan($dataBahan);
 
             // 2. STOK
             $volume = $_POST['qty'] * $_POST['volume_per_botol'];
 
-            $stokId = $this->model->insertStok([
+            $stokId = $this->BahanModel->insertStok([
                 'tgl_penerimaan' => $_POST['tgl_penerimaan'],
                 'tgl_kadaluarsa' => $_POST['tgl_kadaluarsa'],
                 'volume' => $volume,
@@ -55,13 +58,13 @@ class BahanController {
             ], $id_bahan);
 
             // 3. TRANSAKSI
-            $trxId = $this->model->insertTransaksi(
+            $trxId = $this->TransaksiModel->insertTransaksi(
                 $_SESSION['user']['id_normal'],
                 date('Y-m-d'),
                 $volume
             );
 
-            $this->model->insertDetailTransaksi($trxId, $stokId, $volume, 'nambah');
+            $this->TransaksiModel->insertDetailTransaksi($trxId, $stokId, $volume, 'nambah');
 
             $this->conn->commit();
             $_SESSION['alert'] = [

@@ -75,27 +75,7 @@ class BahanModel {
         return $this->conn->lastInsertId();
     }
 
-    public function insertTransaksi($userId, $tgl, $volume) {
-        $stmt = $this->conn->prepare("
-            INSERT INTO transaksi 
-            (id_pengguna, tgl_transaksi, total_volume)
-            VALUES (?, ?, ?)
-        ");
 
-        $stmt->execute([$userId, $tgl, $volume]);
-
-        return $this->conn->lastInsertId();
-    }
-
-    public function insertDetailTransaksi($trxId, $stokId, $volume, $status) {
-        $stmt = $this->conn->prepare("
-            INSERT INTO detail_transaksi 
-            (id_transaksi, id_stok, volume, status_transaksi)
-            VALUES (?, ?, ?, ?)
-        ");
-
-        $stmt->execute([$trxId, $stokId, $volume, $status]);
-    }
 
     // ========= INFORMASI BAHAN =============
     public function getStatusKadaluarsa()
@@ -182,5 +162,84 @@ class BahanModel {
 
         $stmt->execute([$id_bahan]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /* ================= REQUEST BAHAN ================= */
+    // Fungsi untuk menampilkan ringkasan di tabel Dashboard
+    public function getAllRequestsGrouped() {
+        $stmt = $this->conn->prepare("
+            SELECT 
+                r.id_pengguna,
+                p.nama, 
+                r.status,
+                COUNT(r.id) as jumlah_item,
+                -- Menggabungkan nama bahan menjadi teks (misal: Alkohol, Aquades, Beaker)
+                GROUP_CONCAT(b.nama_bahan SEPARATOR ', ') as daftar_bahan
+            FROM request_bahan r
+            JOIN pengguna p ON r.id_pengguna = p.id
+            JOIN bahan b ON r.id_bahan = b.id
+            WHERE r.status = 'pending'
+            GROUP BY r.id_pengguna, r.status
+            ORDER BY 
+                CASE WHEN r.status = 'pending' THEN 0 ELSE 1 END, 
+                MAX(r.id) DESC
+        ");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+// Fungsi untuk melihat detail bahan apa saja yang diajukan 1 user
+    public function getRequestDetailsByUser($id_pengguna) {
+        $stmt = $this->conn->prepare("
+            SELECT 
+                r.id, r.total_volume, r.status, r.id_bahan,
+                b.nama_bahan, b.satuan, b.jenis, b.foto_bahan,
+                p.nama as nama_teknisi
+            FROM request_bahan r
+            JOIN bahan b ON r.id_bahan = b.id
+            JOIN pengguna p ON r.id_pengguna = p.id
+            WHERE r.id_pengguna = ? AND r.status = 'pending'
+            ORDER BY 
+                CASE WHEN r.status = 'pending' THEN 0 ELSE 1 END,
+                r.id DESC
+        ");
+        $stmt->execute([$id_pengguna]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    // Fungsi untuk mengambil semua ID request milik 1 user yang masih pending
+    public function getPendingRequestsByUser($id_pengguna) {
+        $stmt = $this->conn->prepare("SELECT * FROM request_bahan WHERE id_pengguna = ? AND status = 'pending'");
+        $stmt->execute([$id_pengguna]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getRequestById($id_request) {
+        $stmt = $this->conn->prepare("SELECT * FROM request_bahan WHERE id = ?");
+        $stmt->execute([$id_request]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function updateRequestStatus($id_request, $status) {
+        $stmt = $this->conn->prepare("
+            UPDATE request_bahan 
+            SET status = ?
+            WHERE id = ?
+        ");
+        return $stmt->execute([$status, $id_request]);
+    }
+
+    public function insertRequestBahan($id_bahan, $id_pengguna, $total_volume) {
+        // id_transaksi tidak dimasukkan karena status masih pending (belum ada transaksi fisik)
+        $stmt = $this->conn->prepare("
+            INSERT INTO request_bahan (id_bahan, id_pengguna, total_volume, status) 
+            VALUES (?, ?, ?, 'pending')
+        ");
+        
+        return $stmt->execute([$id_bahan, $id_pengguna, $total_volume]);
+    }
+
+    // DI DALAM BAHAN MODEL
+    public function rejectAllPendingByUser($id_pengguna) {
+        $stmt = $this->conn->prepare("UPDATE request_bahan SET status = 'ditolak' WHERE id_pengguna = ? AND status = 'pending'");
+        return $stmt->execute([$id_pengguna]);
     }
 }
