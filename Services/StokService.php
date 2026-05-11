@@ -13,8 +13,8 @@ class StokService {
     private TransaksiModel $TransaksiModel;
     private PDO $conn;
 
-    public function __construct() {
-        $this->conn = (new Database())->getConnection();
+    public function __construct(PDO $db) { // Terima koneksi di sini
+        $this->conn = $db; 
         $this->BahanModel = new BahanModel($this->conn);
         $this->TransaksiModel = new TransaksiModel($this->conn);
     }
@@ -40,7 +40,6 @@ class StokService {
                 date('Y-m-d'),
                 $volume
             );
-
             $this->TransaksiModel->insertDetailTransaksi(
                 $trxId,
                 $stokId,
@@ -190,35 +189,40 @@ class StokService {
 
     /* ================= PERSETUJUAN REQUEST ================= */
     public function approveRequest($requestData, $adminId, $trxIdMaster = null) {
+    try {
+        // 1. Ambil ID Request yang benar dari array (biasanya 'id')
+        $id_request = $requestData['id']; 
 
-        try {
-            // 1. Ambil data request
-            $request = $this->BahanModel->getRequestById($requestData['id_bahan']);
-            if (!$request || $request['status'] !== 'pending') {
-                throw new Exception("Request tidak valid atau sudah diproses.");
-            }
-
-            // 2. Ambil info bahan untuk mendapatkan volume_per_botol
-            $infoBahan = $this->BahanModel->getBahanInfo($request['id_bahan']);
-
-            // 3. PANGGIL FUNGSI FEFO YANG SUDAH KAMU BUAT!
-            // Kita masukkan id_pengguna dari teknisi yang me-request sebagai pemilik transaksi
-            $result = $this->kurangiStok(
-                $requestData['id_bahan'],
-                $requestData['total_volume'],
-                $infoBahan['volume_per_botol'],
-                $requestData['id_pengguna'] ,
-                $trxIdMaster
-            );
-
-            // 4. Update status request menjadi disetujui & simpan id_transaksi
-            $this->BahanModel->updateRequestStatus($id_request, 'disetujui');
-            return $result; // Mengembalikan array trx_id dan rak_dipakai
-
-        } catch (\Throwable $e) {
-            throw $e;
+        // 2. Ambil data request menggunakan ID Request, BUKAN id_bahan
+        $request = $this->BahanModel->getRequestById($id_request); 
+        
+        // Cek apakah data request benar-benar ada
+        if (!$request || $request['status'] !== 'pending') {
+            throw new Exception("Request ID $id_request tidak ditemukan atau sudah diproses.");
         }
+
+        // 3. Ambil info bahan (id_bahan diambil dari hasil query $request di atas)
+        $id_bahan = $request['id_bahan'];
+        $infoBahan = $this->BahanModel->getBahanInfo($id_bahan);
+
+        // 4. Jalankan pengurangan stok
+        $result = $this->kurangiStok(
+            $id_bahan,
+            $request['total_volume'], // Ambil volume dari data database yang valid
+            $infoBahan['volume_per_botol'],
+            $request['id_pengguna'], 
+            $trxIdMaster
+        );
+
+        // 5. Update status
+        $this->BahanModel->updateRequestStatus($id_request, 'disetujui');
+        
+        return $result;
+
+    } catch (\Throwable $e) {
+        throw $e;
     }
+}
 
     public function rejectRequest($id_request) {
         return $this->BahanModel->updateRequestStatus($id_request, 'ditolak');

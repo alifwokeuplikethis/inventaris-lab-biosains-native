@@ -14,15 +14,14 @@
         <div class="table-responsive border rounded-3">
           <table class="table table-hover align-middle mb-0" style="width: 100%;">
             <thead style="background: #f8faf9; font-size: 0.85rem; color: #495057;">
-              <tr>
-                <th width="50" class="ps-4 py-3">No</th>
-                <th>Foto</th>
-                <th>Nama Bahan</th>
-                <th>Jenis</th>
-                <th>Jumlah (Qty)</th>
-                <th>Status</th>
-              </tr>
-            </thead>
+  <tr>
+    <th width="50" class="ps-4 py-3">No</th>
+    <th>Nama Bahan</th>
+    <th>Jumlah Diminta</th>
+    <th>Rincian Pengambilan Stok (FEFO)</th>
+    <th>Status</th>
+  </tr>
+</thead>
             <tbody id="modalDetailBody">
               <tr>
                 <td colspan="6" class="text-center py-5">

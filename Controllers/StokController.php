@@ -14,7 +14,7 @@ class StokController {
         $conn = (new Database())->getConnection();
 
         $this->model = new BahanModel($conn);
-        $this->service = new StokService($this->model, $conn);
+        $this->service = new StokService($conn);
     }
 
     /* ================= HALAMAN ================= */
@@ -30,50 +30,62 @@ class StokController {
 
     /* ================= PROSES ================= */
     public function prosesStok() {
-
         $aksi = $_POST['aksi'];
         $id_bahan = $_GET['id_bahan'];
         $info = $this->model->getBahanInfo($id_bahan);
 
-        if ($aksi === 'tambah') {
+        // 🔥 BUNGKUS KEDUANYA DI DALAM TRY!
+        try {
             
-            $dataBahan = [
-                'tgl_penerimaan' => $_POST['tgl_penerimaan'],
-                'tgl_kadaluarsa' => $_POST['tgl_kadaluarsa'],
-                'rak' => $_POST['rak']
-            ];
-            $this->service->tambahStok(
-                $id_bahan,
-                $dataBahan,
-                $_POST['qty'] * $info['volume_per_botol'],
-                $_SESSION['user']['id_normal']
-            );
+            // ================= PROSES TAMBAH =================
+            if ($aksi === 'tambah') {
+                $dataBahan = [
+                    'tgl_penerimaan' => $_POST['tgl_penerimaan'],
+                    'tgl_kadaluarsa' => $_POST['tgl_kadaluarsa'],
+                    'rak' => $_POST['rak']
+                ];
+                
+                $this->service->tambahStok(
+                    $id_bahan,
+                    $dataBahan,
+                    $_POST['qty'] * $info['volume_per_botol'],
+                    $_SESSION['user']['id_normal']
+                );
 
-            $_SESSION['alert'] = [
-            'icon' => 'success',
-            'title' => 'Berhasil Menambahkan Data!',
-            'text' => 'Data ' . $info['nama_bahan'] . ' berhasil ditambahkan',
-            'timer' => 5000
-            ];
-            
-        }
+                $_SESSION['alert'] = [
+                    'icon' => 'success',
+                    'title' => 'Berhasil Menambahkan Data!',
+                    'text' => 'Data ' . $info['nama_bahan'] . ' berhasil ditambahkan',
+                    'timer' => 5000
+                ];
+            }
 
+            // ================= PROSES KURANGI =================
             if ($aksi === 'kurangi') {
+                $result = $this->service->kurangiStok(
+                    $id_bahan,
+                    $_POST['jumlah_keluar'],
+                    $info['volume_per_botol'],
+                    $_SESSION['user']['id_normal']
+                );
+                
+                $_SESSION['success'] = [
+                    'icon' => 'success',
+                    'title' => 'Berhasil',
+                    'timer' => 5000,
+                    'text' => 'Stok diambil dari rak: ' . implode(', ', array_column($result['rak_dipakai'], 'rak'))
+                ];
+            }
 
-            $result = $this->service->kurangiStok(
-                $id_bahan,
-                $_POST['jumlah_keluar'],
-                $info['volume_per_botol'],
-                $_SESSION['user']['id_normal']
-            );
-                    $_SESSION['success'] = [
-                'icon' => 'success',
-                'title' => 'Berhasil',
-                'timer' => 5000,
-                'text' => 'Stok diambil dari rak: ' . implode(', ', array_column($result['rak_dipakai'], 'rak'))
+        } catch (\Exception $e) {
+            // 🔥 SEKARANG SEMUA ERROR PASTI KETANGKAP DI SINI!
+            $_SESSION['alert'] = [
+                'icon' => 'error',
+                'title' => 'GAGAL MEMPROSES!',
+                'text' => 'Pesan Error Database: ' . $e->getMessage(),
+                'timer' => 10000 // Aku lamain jadi 10 detik biar kamu sempat baca
             ];
         }
-
         
         header("Location: ?action=dashboard");
         exit;

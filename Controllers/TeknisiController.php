@@ -12,12 +12,14 @@ class TeknisiController{
 
     private BahanModel $model;
     private PDO $conn;
+    private TransaksiModel $TransaksiModel;
+    private StokService $service;
 
     public function __construct() {
         $this->conn = (new Database())->getConnection();
         $this->BahanModel = new BahanModel($this->conn);
         $this->TransaksiModel = new TransaksiModel($this->conn);
-        $this->service = new StokService();
+        $this->service = new StokService($this->conn);
     }
 
     /* ================= DASHBOARD ================= */
@@ -34,24 +36,71 @@ class TeknisiController{
     }
     // Fungsi khusus untuk merespons AJAX Modal
     // DI DALAM CONTROLLER
-    public function detailRequestModal() {
-        header('Content-Type: application/json'); // Wajib kasih tahu ini JSON
-        $id_pengguna = $_GET['id_pengguna'] ?? null;
+public function detailRequestModal() {
+    header('Content-Type: application/json');
+    $id_pengguna = $_GET['id_pengguna'] ?? null;
+    
+    if (!$id_pengguna) {
+        echo json_encode(['status' => 'error', 'message' => 'Data tidak valid']);
+        return;
+    }
+
+    try {
+        // 1. Ambil detail request seperti biasa
+        $detailRequests = $this->BahanModel->getRequestDetailsByUser($id_pengguna);
         
-        if (!$id_pengguna) {
-            echo json_encode(['status' => 'error', 'message' => 'Data tidak valid']);
-            return;
+        $resultData = [];
+
+        foreach ($detailRequests as $req) {
+            $itemResult = [
+                'nama_bahan'   => $req['nama_bahan'],
+                'total_volume' => $req['total_volume'],
+                'satuan'       => $req['satuan'],
+                'status'       => $req['status'],
+                'fefo_preview' => [],
+                'stok_kurang'  => false
+            ];
+
+            // 2. Jika statusnya pending, hitung preview potong stok FEFO
+            if ($req['status'] === 'pending') {
+                $stokList = $this->BahanModel->getStokFEFO($req['id_bahan']);
+                $sisa = $req['total_volume'];
+
+                foreach ($stokList as $stok) {
+                    if ($sisa <= 0) break;
+                    
+                    $ambil = min($stok['volume'], $sisa);
+                    
+                    $itemResult['fefo_preview'][] = [
+                        'rak' => $stok['rak'],
+                        'diambil' => $ambil,
+                        'tgl_kadaluarsa' => $stok['tgl_kadaluarsa']
+                    ];
+                    
+                    $sisa -= $ambil;
+                }
+
+                // Jika setelah looping stok FEFO ternyata masih ada sisa (stok gudang tidak cukup)
+                if ($sisa > 0) {
+                    $itemResult['stok_kurang'] = true;
+                }
+            }
+
+            $resultData[] = $itemResult;
         }
 
-        $detailRequests = $this->BahanModel->getRequestDetailsByUser($id_pengguna);
-        echo json_encode(['status' => 'success', 'data' => $detailRequests]);
-        exit;
+        echo json_encode(['status' => 'success', 'data' => $resultData]);
+
+    } catch (\Throwable $e) {
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
     }
+    exit;
+}
     // Fungsi baru untuk memproses persetujuan massal (1 klik banyak bahan)
     public function prosesRequestBatch() {
-    $id_pengguna = $_GET['id_pengguna'];
-    $aksi = $_GET['status'];
-    $userId = $_SESSION['user']['id_normal'];
+    $id_pengguna = $_GET['id_pengguna'] ?? null;
+    $aksi = $_GET['status'] ?? null;
+    $userId = $_SESSION['user']['id_normal'] ?? null;
     $tgl = date('Y-m-d');
 
     try {
@@ -62,21 +111,20 @@ class TeknisiController{
         }
 
         if ($aksi === 'setuju') {
-            
             $this->conn->beginTransaction();
 
-            // 🔥 1. KITA HITUNG DULU TOTAL KESELURUHANNYA
+            // 1. Hitung total volume keseluruhan untuk header transaksi
             $totalSemuaBarang = 0;
             foreach ($pendingRequests as $req) {
-                // Asumsi field jumlah di request bernama 'jumlah'
                 $totalSemuaBarang += $req['total_volume']; 
             }
 
-            // 🔥 2. SEKARANG MASUKIN TOTALNYA KE TRANSAKSI INDUK (Bukan 0 lagi)
+            // 2. Insert ke tabel transaksi (Master)
             $trxIdMaster = $this->TransaksiModel->insertTransaksi($userId, $tgl, $totalSemuaBarang);
 
-            // 3. Baru deh kita looping buat motong stoknya
+            // 3. Loop untuk proses tiap item dan potong stok
             foreach ($pendingRequests as $req) {
+                // Di sini fungsi approveRequest akan melempar Exception jika stok kurang
                 $this->service->approveRequest($req, $userId, $trxIdMaster);
             }
             
@@ -84,22 +132,27 @@ class TeknisiController{
 
             $_SESSION['alert'] = [
                 'icon' => 'success',
-                'title' => 'Pengajuan Disetujui!',
-                'text' => count($pendingRequests) . ' bahan berhasil diproses.',
+                'title' => 'Berhasil!',
+                'text' => count($pendingRequests) . ' bahan telah disetujui dan stok dipotong.',
+                'timer' => 3000
             ];
 
         } elseif ($aksi === 'tolak') {
-            // ... (kode tolak tetap sama)
+            // Logika tolak bisa diletakkan di sini
         }
-    } catch (\Exception $e) {
-        if (isset($aksi) && $aksi === 'setuju' && $this->conn->inTransaction()) {
+
+    } catch (Exception $e) {
+        // JIKA ERROR (Termasuk Stok Tidak Cukup), batalkan semua perubahan database
+        if ($this->conn->inTransaction()) {
             $this->conn->rollBack();
         }
 
+        // KIRIM PESAN ERROR KE DASHBOARD
         $_SESSION['alert'] = [
             'icon' => 'error',
             'title' => 'Gagal Memproses!',
-            'text' => $e->getMessage(),
+            'text' => 'Terjadi kesalahan: ' . $e->getMessage(),
+            'timer' => 5000
         ];
     }
 

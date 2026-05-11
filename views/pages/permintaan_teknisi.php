@@ -279,49 +279,64 @@ $(document).ready(function(){
       
       // Jalankan AJAX
       $.ajax({
-          url: '?action=detailRequestModal&id_pengguna=' + idPengguna,
-          type: 'GET',
-          dataType: 'json', 
-          success: function(response) {
-              if(response.status === 'success') {
-                  let html = '';
-                  let data = response.data;
+    url: '?action=detailRequestModal&id_pengguna=' + idPengguna,
+    type: 'GET',
+    dataType: 'json', 
+    success: function(response) {
+        if(response.status === 'success') {
+            let html = '';
+            let data = response.data;
 
-                  if(data.length === 0) {
-                      html = '<tr><td colspan="6" class="text-center py-4">Tidak ada data.</td></tr>';
-                  } else {
-                      let no = 1;
-                      data.forEach(function(item) {
-                          let statusClass = (item.status === 'pending') ? 'bg-warning bg-opacity-10 text-warning border-warning' : ((item.status === 'disetujui') ? 'bg-success bg-opacity-10 text-success border-success' : 'bg-danger bg-opacity-10 text-danger border-danger');
-                          let jenisClass = (item.jenis === 'Padat') ? 'bg-light text-dark border' : 'bg-info bg-opacity-10 text-info border-info';
-                          
-                          let foto = item.foto_bahan 
-                              ? `<img src="<?= BASE_URL ?>/images/uploads/${item.foto_bahan}" width="45" height="45" class="rounded object-fit-cover shadow-sm">` 
-                              : `<div class="bg-light rounded d-flex align-items-center justify-content-center text-muted" style="width:45px; height:45px;"><i class="bi bi-image"></i></div>`;
+            if(data.length === 0) {
+                html = '<tr><td colspan="5" class="text-center py-4">Tidak ada data.</td></tr>';
+            } else {
+                let no = 1;
+                data.forEach(function(item) {
+                    let statusClass = (item.status === 'pending') ? 'bg-warning bg-opacity-10 text-warning border-warning' : ((item.status === 'disetujui') ? 'bg-success bg-opacity-10 text-success border-success' : 'bg-danger bg-opacity-10 text-danger border-danger');
+                    let statusTeks = item.status.charAt(0).toUpperCase() + item.status.slice(1);
 
-                          let statusTeks = item.status.charAt(0).toUpperCase() + item.status.slice(1);
+                    // --- LOGIKA RENDER FEFO PREVIEW ---
+                    let fefoHtml = '';
+                    if (item.status === 'pending') {
+                        if (item.fefo_preview && item.fefo_preview.length > 0) {
+                            fefoHtml = '<ul class="mb-0 ps-3 text-muted" style="font-size:0.85rem;">';
+                            item.fefo_preview.forEach(function(fefo) {
+                                fefoHtml += `<li class="mb-1">Ambil <strong>${fefo.diambil} ${item.satuan}</strong> dari <strong>Rak ${fefo.rak}</strong> <br><small>(ED: ${fefo.tgl_kadaluarsa})</small></li>`;
+                            });
+                            fefoHtml += '</ul>';
+                            
+                            if (item.stok_kurang) {
+                                fefoHtml += `<div class="text-danger mt-2 fw-bold" style="font-size:0.8rem;"><i class="bi bi-exclamation-triangle"></i> Peringatan: Stok gudang tidak mencukupi!</div>`;
+                            }
+                        } else {
+                            fefoHtml = '<div class="text-danger fw-bold" style="font-size:0.85rem;"><i class="bi bi-x-circle"></i> Stok kosong di semua rak!</div>';
+                        }
+                    } else {
+                        // Jika sudah disetujui/ditolak, tidak perlu hitung FEFO lagi
+                        fefoHtml = '<span class="text-muted" style="font-size:0.85rem;">-</span>';
+                    }
+                    // -----------------------------------
 
-                          html += `
-                              <tr>
-                                  <td class="ps-4">${no++}</td>
-                                  <td>${foto}</td>
-                                  <td class="fw-bold text-dark">${item.nama_bahan}</td>
-                                  <td><span class="badge rounded-pill ${jenisClass}">${item.jenis}</span></td>
-                                  <td class="text-main fw-bold">${item.total_volume} <small class="text-muted fw-normal">${item.satuan}</small></td>
-                                  <td><span class="badge px-3 py-2 rounded-pill border ${statusClass}">${statusTeks}</span></td>
-                              </tr>
-                          `;
-                      });
-                  }
-                  $('#modalDetailBody').html(html);
-              } else {
-                  $('#modalDetailBody').html(`<tr><td colspan="6" class="text-center text-danger py-4">${response.message}</td></tr>`);
-              }
-          },
-          error: function(xhr) {
-              $('#modalDetailBody').html('<tr><td colspan="6" class="text-center text-danger py-4"><i class="bi bi-exclamation-triangle-fill fs-3 d-block mb-2"></i> Gagal memuat data dari server. Pastikan routing valid dan Controller bersih dari HTML.</td></tr>');
-          }
-      });
+                    html += `
+                        <tr>
+                            <td class="ps-4">${no++}</td>
+                            <td class="fw-bold text-dark">${item.nama_bahan}</td>
+                            <td class="text-main fw-bold">${item.total_volume} <small class="text-muted fw-normal">${item.satuan}</small></td>
+                            <td>${fefoHtml}</td>
+                            <td><span class="badge px-3 py-2 rounded-pill border ${statusClass}">${statusTeks}</span></td>
+                        </tr>
+                    `;
+                });
+            }
+            $('#modalDetailBody').html(html);
+        } else {
+            $('#modalDetailBody').html(`<tr><td colspan="5" class="text-center text-danger py-4">${response.message}</td></tr>`);
+        }
+    },
+    error: function(xhr) {
+        $('#modalDetailBody').html('<tr><td colspan="5" class="text-center text-danger py-4"><i class="bi bi-exclamation-triangle-fill fs-3 d-block mb-2"></i> Gagal memuat data dari server.</td></tr>');
+    }
+});
   });
 
 });
