@@ -144,6 +144,28 @@ Swal.fire({
                                             </a>
                                         <?php endif; ?>
 
+                                        <button
+    type="button"
+    class="btn btn-sm btn-warning btnEdit"
+
+    data-bs-toggle="modal"
+    data-bs-target="#modalTeknisi"
+
+    data-id="<?= $teknisi['id'] ?? '' ?>"
+    data-nama="<?= htmlspecialchars($teknisi['nama'] ?? '') ?>"
+    data-email="<?= htmlspecialchars($teknisi['email'] ?? '') ?>"
+    data-telp="<?= htmlspecialchars($teknisi['no_telp'] ?? '') ?>"
+    data-alamat="<?= htmlspecialchars($teknisi['alamat'] ?? '') ?>"
+    data-kelamin="<?= htmlspecialchars($teknisi['jenis_kelamin'] ?? '') ?>"
+    data-foto="<?= htmlspecialchars($foto ?? '') ?>"
+    data-status="<?= $teknisi['is_aktif'] ?? 0 ?>">
+
+    <i class="bi bi-info"></i>
+
+</button>
+
+                                    
+
                                         <a href="?pages=akun_teknisi&action=hapus&id=<?= $teknisi['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus permanen?');">
                                             <i class="bi bi-trash"></i>
                                         </a>
@@ -160,3 +182,7 @@ Swal.fire({
         </section>
     </div>
 </main>
+
+<?php
+include "Modal/modalAkunTeknisi.php";
+?>

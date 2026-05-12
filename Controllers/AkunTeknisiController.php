@@ -4,7 +4,8 @@ use Models\TeknisiModel;
 use Services\TeknisiService;
 
 class AkunTeknisiController{
-
+    private TeknisiService $service;
+    private TeknisiModel $model;
     public function  __construct(){
         $this->model = new TeknisiModel();
         $this->service = new TeknisiService();
@@ -51,7 +52,7 @@ class AkunTeknisiController{
         header("Location: ?action=akun_teknisi");
         exit;
     }
-
+    
     // Aksi hapus akun permanen
 public function hapus() {
     $id = $_GET['id'] ?? null;

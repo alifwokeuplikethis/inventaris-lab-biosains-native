@@ -10,7 +10,7 @@ use PDO;
 
 class TeknisiController{
 
-    private BahanModel $model;
+    private BahanModel $BahanModel;
     private PDO $conn;
     private TransaksiModel $TransaksiModel;
     private StokService $service;
