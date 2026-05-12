@@ -271,9 +271,13 @@ Swal.fire({
 
                     <td>
                       <div class="d-flex gap-2">
-                        <button class="btn-circle btn-detail" data-bs-toggle="modal" data-bs-target="#contohModal" title="Lihat detail bahan"><i class="bi bi-eye"></i></button>
+                        <button class="btn-circle btn-detail btn-view-batch" data-id="<?= $row['id'] ?>" title="Lihat detail bahan">
+                            <i class="bi bi-eye"></i>
+                        </button>
                         <button class="btn-circle btn-stok" onclick="window.location.href='?action=transaksi_stok&id_bahan=<?= $row['id'] ?>'" title="Lakukan transaksi stok"><i class="bi bi-plus"></i></button>
-                        <button class="btn-circle btn-hapus" title="Hapus bahan"><i class="bi bi-trash"></i></button>
+                        <button type="button" class="btn-circle btn-hapus" data-id="<?= $row['id'] ?>" title="Hapus bahan">
+                          <i class="bi bi-trash"></i>
+                      </button>
                       </div>
                     </td>
                   </tr>

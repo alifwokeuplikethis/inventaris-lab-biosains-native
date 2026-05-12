@@ -26,6 +26,18 @@ public function index() {
 
         // Ambil data berdasarkan filter
         $dataLaporan = $this->laporanModel->getLaporanFlat($filters);
+        $totalTransaksi = count($dataLaporan);
+        $totalMasuk = 0;
+        $totalKeluar = 0;
+
+        foreach ($dataLaporan as $row) {
+            // Ingat: di database statusnya 'nambah' atau 'pakai'
+            if ($row['status_transaksi'] === 'nambah') {
+                $totalMasuk++;
+            } elseif ($row['status_transaksi'] === 'pakai') {
+                $totalKeluar++;
+            }
+        }
 
         require PAGES_PATH . 'laporan.php';
     }

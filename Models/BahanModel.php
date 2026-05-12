@@ -242,4 +242,60 @@ class BahanModel {
         $stmt = $this->conn->prepare("UPDATE request_bahan SET status = 'ditolak' WHERE id_pengguna = ? AND status = 'pending'");
         return $stmt->execute([$id_pengguna]);
     }
+
+    public function deleteBahanPermanen($id_bahan) {
+    try {
+        // 1. Ambil nama file foto
+        $stmtFoto = $this->conn->prepare("SELECT foto_bahan FROM bahan WHERE id = ?");
+        $stmtFoto->execute([$id_bahan]);
+        $foto = $stmtFoto->fetchColumn();
+
+        // MULAI TRANSAKSI DATABASE
+        $this->conn->beginTransaction();
+
+        // 2. Hapus DETAIL TRANSAKSI (Anak)
+        // Kita hapus dulu isi dari nota-nota yang mengandung bahan ini
+        $stmtDetailTrans = $this->conn->prepare("
+            DELETE FROM detail_transaksi 
+            WHERE id_stok IN (SELECT id FROM stok WHERE id_bahan = ?)
+        ");
+        $stmtDetailTrans->execute([$id_bahan]);
+
+        // 3. Hapus TRANSAKSI (Induk) yang jadi kosong
+        // Logika: Hapus semua transaksi yang sudah tidak punya detail sama sekali
+        // Ini akan membersihkan nota-nota kosong setelah detailnya dihapus di langkah 2
+        $this->conn->exec("
+            DELETE FROM transaksi 
+            WHERE id NOT IN (SELECT DISTINCT id_transaksi FROM detail_transaksi)
+        ");
+
+        // 4. Hapus REQUEST BAHAN
+        $stmtReq = $this->conn->prepare("DELETE FROM request_bahan WHERE id_bahan = ?");
+        $stmtReq->execute([$id_bahan]);
+
+        // 5. Hapus STOK
+        $stmtStok = $this->conn->prepare("DELETE FROM stok WHERE id_bahan = ?");
+        $stmtStok->execute([$id_bahan]);
+
+        // 6. Terakhir, Hapus MASTER BAHAN
+        $stmtBahan = $this->conn->prepare("DELETE FROM bahan WHERE id = ?");
+        $stmtBahan->execute([$id_bahan]);
+
+        // SIMPAN SEMUA PERUBAHAN
+        $this->conn->commit();
+
+        // 7. Hapus foto fisik dari folder
+        $pathFoto = 'images/uploads/' . $foto;
+        if ($foto && file_exists($pathFoto)) {
+            unlink($pathFoto); 
+        }
+
+        return true;
+
+    } catch (\Exception $e) {
+        // Jika ada error, batalkan semua (Data tetap aman)
+        $this->conn->rollBack();
+        throw $e; 
+    }
+}
 }

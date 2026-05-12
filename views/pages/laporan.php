@@ -49,12 +49,36 @@ $getRak    = $_GET['rak'] ?? '';
   <div class="container-fluid px-4">
 
     <section class="p-4 shadow-sm" style="background:#2b6766; border-radius:20px;">
-      <div class="row g-4 mb-4">
-        <div class="col"><div class="stat-pill pill-total"><div class="ico"><i class="bi bi-box"></i></div><div><small>Stok Awal</small><strong>248</strong></div></div></div>
-        <div class="col"><div class="stat-pill pill-aktif"><div class="ico"><i class="bi bi-arrow-down"></i></div><div><small>Total Masuk</small><strong>132</strong></div></div></div>
-        <div class="col"><div class="stat-pill pill-nonaktif"><div class="ico"><i class="bi bi-arrow-up"></i></div><div><small>Total Keluar</small><strong>87</strong></div></div></div>
-        <div class="col"><div class="stat-pill pill-akhir"><div class="ico"><i class="bi bi-calculator"></i></div><div><small>Stok Akhir</small><strong>293</strong></div></div></div>
-        <div class="col"><div class="stat-pill pill-expired"><div class="ico"><i class="bi bi-exclamation-triangle"></i></div><div><small>Kadaluarsa</small><strong>12</strong></div></div></div>
+      <div class="row g-3 mb-4">
+        <div class="col">
+        <div class="stat-pill pill-total">
+            <div class="ico"><i class="bi bi-box"></i></div>
+            <div>
+                <small>Total Transaksi</small>
+                <strong><?= $totalTransaksi ?></strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="stat-pill pill-aktif">
+            <div class="ico"><i class="bi bi-arrow-down"></i></div>
+            <div>
+                <small>Total Masuk</small>
+                <strong><?= $totalMasuk ?></strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="stat-pill pill-nonaktif">
+            <div class="ico"><i class="bi bi-arrow-up"></i></div>
+            <div>
+                <small>Total Keluar</small>
+                <strong><?= $totalKeluar ?></strong>
+            </div>
+        </div>
+    </div>
       </div>
 
       <div class="card border-0 shadow-lg" style="border-radius:18px; overflow:hidden;">

@@ -54,7 +54,7 @@ class StokController {
 
                 $_SESSION['alert'] = [
                     'icon' => 'success',
-                    'title' => 'Berhasil Menambahkan Data!',
+                    'title' => 'Berhasil Menambahkan Stok!',
                     'text' => 'Data ' . $info['nama_bahan'] . ' berhasil ditambahkan',
                     'timer' => 5000
                 ];
@@ -69,11 +69,11 @@ class StokController {
                     $_SESSION['user']['id_normal']
                 );
                 
-                $_SESSION['success'] = [
+                $_SESSION['alert'] = [
                     'icon' => 'success',
-                    'title' => 'Berhasil',
-                    'timer' => 5000,
-                    'text' => 'Stok diambil dari rak: ' . implode(', ', array_column($result['rak_dipakai'], 'rak'))
+                    'title' => 'Berhasil Mengurangi Stok!',
+                    'text' => 'Data ' . $info['nama_bahan'] . ' berhasil ditambahkan',
+                    'timer' => 5000
                 ];
             }
 
@@ -117,5 +117,46 @@ class StokController {
 
         exit;
     }
+    public function detailBatchModal() {
+    // 1. SAPU JAGAT: Bersihkan semua "sampah" / spasi gaib sebelum mencetak JSON
+    if (ob_get_level() == 0) ob_start();
+    ob_clean();
+
+    // 2. Paksa format JSON
+    header('Content-Type: application/json');
+    
+    $id_bahan = $_GET['id_bahan'] ?? null;
+
+    if (!$id_bahan) {
+        echo json_encode(['status' => 'error', 'message' => 'ID Bahan tidak valid']);
+        exit; // HARUS EXIT, JANGAN RETURN
+    }
+
+    try {
+        // Ambil info master bahan
+        $infoBahan = $this->model->getBahanInfo($id_bahan);
+        
+        // Ambil list batch stok (FEFO)
+        $listBatch = $this->model->getStokFEFO($id_bahan);
+
+        if (!$infoBahan) {
+            echo json_encode(['status' => 'error', 'message' => 'Data bahan tidak ditemukan']);
+            exit; // HARUS EXIT
+        }
+
+        // Cetak data JSON yang bersih
+        echo json_encode([
+            'status' => 'success',
+            'info'   => $infoBahan,
+            'batch'  => $listBatch
+        ]);
+
+    } catch (\Throwable $e) {
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+        exit; // HARUS EXIT
+    }
+    
+    exit; // HARUS EXIT
+}
     
 }

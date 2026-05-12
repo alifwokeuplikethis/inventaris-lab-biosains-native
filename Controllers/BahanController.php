@@ -82,4 +82,29 @@ class BahanController {
             die($e->getMessage());
         }
     }
+
+    public function deleteBahan() {
+    if (ob_get_level() == 0) ob_start();
+    ob_clean();
+    header('Content-Type: application/json');
+
+    // Mengambil ID dari metode POST
+    $id_bahan = $_POST['id_bahan'] ?? null;
+
+    if (!$id_bahan) {
+        echo json_encode(['status' => 'error', 'message' => 'ID Bahan tidak valid']);
+        exit;
+    }
+
+    try {
+        // Panggil fungsi hapus di Model
+        $this->BahanModel->deleteBahanPermanen($id_bahan);
+        
+        echo json_encode(['status' => 'success', 'message' => 'Bahan berhasil dihapus']);
+    } catch (\Throwable $e) {
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+    }
+    
+    exit;
+}
 }

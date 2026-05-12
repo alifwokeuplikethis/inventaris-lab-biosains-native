@@ -63,6 +63,16 @@ return [
         'route' => 'insert/tambah_bahan',
         'controller' => [BahanController::class, 'insert_bahan']
     ],
+    [
+        'route' => 'detailBatchModal',
+        'controller' => [StokController::class, 'detailBatchModal'],
+        'api' => true
+    ],
+    [
+        'route' => 'deleteBahan',
+        'controller' => [BahanController::class, 'deleteBahan'],
+        'api' => true
+    ],
 
     // STOK
     [

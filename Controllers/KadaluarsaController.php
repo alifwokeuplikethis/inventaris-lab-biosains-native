@@ -6,6 +6,7 @@ use Models\Database;
 
 class KadaluarsaController{
     private $model;
+    private $conn;
 
     public function __construct(){
         $conn = (new Database())->getConnection();
