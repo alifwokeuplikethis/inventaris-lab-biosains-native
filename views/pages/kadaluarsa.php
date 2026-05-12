@@ -78,9 +78,9 @@ require LAYOUT_PATH . "navbar.php";
           <div class="stat-pill pill-total">
             <div class="ico"><i class="bi bi-box"></i></div>
             <div>
-              <small>Total Data</small>
+              <small>Total Stok yang perlu diperhatikan</small>
               <div>
-                <strong>4</strong>
+                <strong><?= $totalHampir + $totalExpired ?></strong>
               </div>
             </div>
           </div>
@@ -142,25 +142,25 @@ require LAYOUT_PATH . "navbar.php";
                 <ul class="dropdown-menu dropdown-menu-end shadow border-0">
 
                     <li>
-                        <a class="dropdown-item filter-item" href="#" data-value="" data-column="7">
+                        <a class="dropdown-item filter-item" href="#" data-value="" data-column="8">
                             Semua
                         </a>
                     </li>
 
                     <li>
-                        <a class="dropdown-item filter-item" href="#" data-value="expired" data-column="7">
+                        <a class="dropdown-item filter-item" href="#" data-value="expired" data-column="8">
                             Expired
                         </a>
                     </li>
 
                     <li>
-                        <a class="dropdown-item filter-item" href="#" data-value="hampir kadaluarsa" data-column="7"> 
+                        <a class="dropdown-item filter-item" href="#" data-value="hampir kadaluarsa" data-column="8"> 
                             Hampir Kadaluarsa
                         </a>
                     </li>
 
                     <li>
-                        <a class="dropdown-item filter-item" href="#" data-value="aman" data-column="7"> 
+                        <a class="dropdown-item filter-item" href="#" data-value="aman" data-column="8"> 
                             Aman
                         </a>
                     </li>
@@ -193,9 +193,9 @@ require LAYOUT_PATH . "navbar.php";
               <thead>
                 <tr>
                   <th>No</th>
-                  <th>ID Bahan</th>
                   <th>Nama Bahan</th>
                   <th>Tanggal Penerimaan</th>
+                  <th>Stok Botol</th>
                   <th>Kadaluarsa</th>
                   <th>Rak</th>
                   <th>Status</th>
@@ -223,9 +223,9 @@ require LAYOUT_PATH . "navbar.php";
 <tr data-status="<?= trim(strtolower($item['status_kadaluarsa'])) ?>">
  
                     <td><?= $no; ?></td>
-                    <td><?= $item['id_bahan'] ?></td>
                     <td><?= $item['nama_bahan'] ?></td>
                     <td><?= $item['tgl_penerimaan'] ?></td>
+                    <td><?= $item['volume']  ?></td>
                     <td><?= $item['tgl_kadaluarsa'] ?></td>
                     <td><?= $item['rak'] ?></td>
                     <td><?= $item['status'] ?></td>

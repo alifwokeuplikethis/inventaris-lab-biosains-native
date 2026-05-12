@@ -207,7 +207,7 @@ require LAYOUT_PATH . "navbar.php";
 
                           <?php if ($req['status'] === 'pending'): ?>
                             
-                            <a href="?action=prosesRequestBatch&id_pengguna=<?= $req['id_pengguna']; ?>&status=setuju" 
+                            <a href="?action=prosesRequestBatch&id_pengguna=<?= $req['id_pengguna']; ?>&status=setuju&id_request=<?= $req['id'] ?>" 
                                class="btn-circle btn-stok" title="Setujui Semua"
                                onclick="return confirm('Setujui <?= $req['jumlah_item']; ?> bahan dari <?= htmlspecialchars($req['nama']); ?>? Stok akan otomatis terpotong (FEFO).')">
                                <i class="bi bi-check-circle"></i>

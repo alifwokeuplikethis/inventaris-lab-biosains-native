@@ -271,7 +271,9 @@ Swal.fire({
 
                     <td>
                       <div class="d-flex gap-2">
-                        <button class="btn-circle btn-detail" data-bs-toggle="modal" data-bs-target="#contohModal" title="Lihat detail bahan"><i class="bi bi-eye"></i></button>
+                        <button class="btn-circle btn-detail btn-view-batch" data-id="<?= $row['id'] ?>" title="Lihat detail bahan">
+                            <i class="bi bi-eye"></i>
+                        </button>
                         <a class="btn-circle btn-detail" title="Request bahan" href="?action=pengajuan_bahan&id_bahan=<?= $row['id'] ?>"><i class="bi bi-bag-plus-fill"></i></a>
                       </div>
                     </td>

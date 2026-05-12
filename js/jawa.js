@@ -43,6 +43,12 @@ $(document).ready(function() {
         $('#filterStatusLabel').text($(this).text().trim());
         if(table) table.column(7).search(val).draw();
     });
+    $(document).on('click', '.filter-item', function(e) {
+        e.preventDefault();
+        var val = $(this).attr('data-value'); 
+        $('#filterText').text($(this).text().trim());
+        if(table) table.column(8).search('^' + val + '$', true, false).draw();
+    });
 
     $(document).on('click', '.filter-jenis', function(e) {
         e.preventDefault();

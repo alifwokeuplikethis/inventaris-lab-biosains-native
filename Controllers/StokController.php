@@ -31,6 +31,7 @@ class StokController {
     /* ================= PROSES ================= */
     public function prosesStok() {
         $aksi = $_POST['aksi'];
+        $id_pengguna = $_POST['id_pengguna'] ?? NULL;
         $id_bahan = $_GET['id_bahan'];
         $info = $this->model->getBahanInfo($id_bahan);
 
@@ -66,7 +67,7 @@ class StokController {
                     $id_bahan,
                     $_POST['jumlah_keluar'],
                     $info['volume_per_botol'],
-                    $_SESSION['user']['id_normal']
+                    $id_pengguna
                 );
                 
                 $_SESSION['alert'] = [

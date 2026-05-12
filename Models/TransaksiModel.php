@@ -50,13 +50,25 @@ class TransaksiModel{
                 b.nama_bahan, 
                 b.jenis,
                 b.satuan,
+
                 dt.volume AS volume_item,
+
+                FLOOR(dt.volume / b.volume_per_botol) AS quantity,
+
                 dt.status_transaksi,
                 s.rak
+
             FROM detail_transaksi dt
-            JOIN transaksi t ON dt.id_transaksi = t.id
-            JOIN stok s ON dt.id_stok = s.id
-            JOIN bahan b ON s.id_bahan = b.id
+
+            JOIN transaksi t 
+                ON dt.id_transaksi = t.id
+
+            JOIN stok s 
+                ON dt.id_stok = s.id
+
+            JOIN bahan b 
+                ON s.id_bahan = b.id
+
             WHERE 1=1
         ";
 

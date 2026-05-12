@@ -96,11 +96,13 @@ public function detailRequestModal() {
     }
     exit;
 }
-    // Fungsi baru untuk memproses persetujuan massal (1 klik banyak bahan)
+    // Fungsi PENERIMA PROSES REQUEST BATCH TEKNISI
     public function prosesRequestBatch() {
     $id_pengguna = $_GET['id_pengguna'] ?? null;
+    $id_request = $_GET['id_request'] ?? null;
+    $request = $this->BahanModel->getRequestById($id_request);
     $aksi = $_GET['status'] ?? null;
-    $userId = $_SESSION['user']['id_normal'] ?? null;
+    $userId = $request['id_pengguna'] ?? null;
     $tgl = date('Y-m-d');
 
     try {

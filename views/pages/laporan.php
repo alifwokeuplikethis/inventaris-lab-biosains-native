@@ -40,6 +40,11 @@ $getRak    = $_GET['rak'] ?? '';
   #table-dashboard th:nth-child(6), #table-dashboard td:nth-child(6) { width: 75px; text-align: center; }
   #table-dashboard th:nth-child(7), #table-dashboard td:nth-child(7) { width: 75px; text-align: center; }
   #table-dashboard th:nth-child(8), #table-dashboard td:nth-child(8) { width: 70px; text-align: center; }
+  #table-dashboard th:nth-child(9),
+#table-dashboard td:nth-child(9) {
+    width: 90px;
+    text-align: center;
+}
   .badge.bg-light { background: #eef2f0 !important; color: #2b6766 !important; font-weight: 500; padding: 5px 10px; }
   div.dataTables_filter { display: none; }
   .table-responsive { overflow-x: auto; }
@@ -119,6 +124,7 @@ $getRak    = $_GET['rak'] ?? '';
                   <th>Tanggal</th>
                   <th>ID</th>
                   <th>Nama Bahan</th>
+                  <th>Kuantitas botol</th>
                   <th>Jenis</th>
                   <th>Masuk</th>
                   <th>Keluar</th>
@@ -127,11 +133,7 @@ $getRak    = $_GET['rak'] ?? '';
               </thead>
               <tbody>
                 
-                <?php if (empty($dataLaporan)): ?>
-                  <tr>
-                    <td colspan="8" class="text-center py-4 text-muted">Tidak ada mutasi bahan pada periode ini.</td>
-                  </tr>
-                <?php else: ?>
+                <?php if (!empty($dataLaporan)): ?>
                   
                   <?php $no = 1; foreach ($dataLaporan as $row): ?>
                     <tr>
@@ -139,6 +141,7 @@ $getRak    = $_GET['rak'] ?? '';
                       <td><?= date('d/m/Y', strtotime($row['tgl_transaksi'])) ?></td>
                       <td>TRX-<?= str_pad($row['id_transaksi'], 3, '0', STR_PAD_LEFT) ?></td>
                       <td><strong><?= htmlspecialchars($row['nama_bahan']) ?></strong></td>
+                      <td><strong><?= $row['quantity'] ?></strong></td>
                       
                       <td class="text-center">
                         <span class="badge bg-light"><?= htmlspecialchars($row['jenis']) ?></span>

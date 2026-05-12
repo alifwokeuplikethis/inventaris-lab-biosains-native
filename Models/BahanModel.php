@@ -169,6 +169,7 @@ class BahanModel {
     public function getAllRequestsGrouped() {
         $stmt = $this->conn->prepare("
             SELECT 
+                MAX(r.id) as id,
                 r.id_pengguna,
                 p.nama, 
                 r.status,
