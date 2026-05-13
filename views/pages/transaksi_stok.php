@@ -4,6 +4,11 @@ require LAYOUT_PATH . "sidebar.php";
 require LAYOUT_PATH . "navbar.php";
 ?>
 <style>
+  body { 
+      background: #f5f7f6; 
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+    }
+    .text-main { color: #02343F; }
 .input-custom {
   border: 1px solid #d1d9d9;
   border-radius: 8px;
@@ -53,13 +58,13 @@ require LAYOUT_PATH . "navbar.php";
 }
 </style>
 
-<main class="mt-5 pt-3">
-<div class="container-fluid">
+<main class="py-4 ">
+<div class="container-fluid px-4">
 
-<section class="p-4 shadow-sm" style="background-color:#2b6766;border-radius:15px;">
+<section class="p-4 shadow-sm" style="background-color:#2b6766; border-radius:20px;">
  <section class="p-3 shadow-sm mb-4 d-flex justify-content-between align-items-center" style="background-color: #ffffff; border-radius: 15px;">
       <div>
-        <h2 class="mb-0 fw-bold" style="color: #2b6766; font-size: 1.4rem;">
+        <h2 class="mb-0 fw-bold" style="color: #02343F; font-size: 1.4rem;">
           <i class="fa fa-plus-circle me-2 text-secondary opacity-50"></i>Transaksi Stok
         </h2>
       </div>
